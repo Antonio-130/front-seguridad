@@ -1,0 +1,10 @@
+:root {
+  --c-ash-gray: #CAD2C5;
+  --c-dark-sea-green: #84A98C;
+  --c-hookers-green: #52796F;
+  --c-dark-slate-gray: #354F52;
+  --c-charcoal: #2F3E46;
+  --c-white: #fff;
+  --c-correct: rgba(0, 255, 0, 0.75);
+  --c-error: rgba(255, 0, 0, 0.75);
+}
