@@ -1,10 +1,11 @@
 import React, {useContext} from "react";
 import 'styles/Header.css';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UsuarioContext from "context/UsuarioContext";
 
 export default function Header() {
   const {isLogged, handleLogout, hasAccesoByTag} = useContext(UsuarioContext)
+  const navigate = useNavigate();
   return (
     <>
       <div className="empty-space"></div>
@@ -23,7 +24,7 @@ export default function Header() {
         <div className="button-container">
           <button>
             {isLogged
-              ? <p style={{'color': 'white'}} onClick={handleLogout}>Cerrar Sesion</p>
+              ? <p style={{'color': 'white'}} onClick={() => {handleLogout(); navigate("/")}}>Cerrar Sesion</p>
               : <p><Link to="/auth/login" style={{'color': 'white'}}>Iniciar sesión</Link></p>
             }
           </button>

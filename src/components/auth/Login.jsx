@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { loginValidation } from 'schemas/validation';
 import 'styles/Form.css';
+import Loader from 'components/Loader';
 
 import FieldText from 'components/inputsForm/FieldText';
 import FieldButton from 'components/inputsForm/FieldButton';
@@ -18,6 +19,7 @@ export default function Login() {
   let navigate = useNavigate();
 
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const initialValues = {
     emailOrUsername: '',
@@ -25,6 +27,7 @@ export default function Login() {
   }
 
   const onSubmit = values => {
+    setLoading(true);
     const new_data = transformData(values)
     login(new_data).then((res) => {
       if (res.status === "success") {
@@ -39,13 +42,16 @@ export default function Login() {
         localStorage.setItem('token', JSON.stringify(res.data[1].token));
         localStorage.setItem('acciones', JSON.stringify(res.data[2].acciones));
         setError(false);
+        setLoading(false);
         navigate('/');
       }
       else {
+        setLoading(false);
         setError(true);
       }
     }).catch((err) => {
       setError(true);
+      setLoading(false);
       console.log(err);
     });
   }
@@ -92,6 +98,7 @@ export default function Login() {
               </div>
             }
           </div>
+          {loading && <Loader />}
         </Form>
       )}
     </Formik>

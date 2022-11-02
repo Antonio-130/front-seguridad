@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext } from 'react'
 import Usuario from './Usuario'
 import 'styles/usuario/ListOfUsuarios.css'
+import Loader from 'components/Loader'
 import { getUsuarios } from 'services/usuario'
 import { Link } from 'react-router-dom'
 
@@ -11,6 +12,7 @@ export default function ListOfUsuarios() {
   const {hasAccion} = useContext(UsuarioContext)
 
   const [usuarios, setUsuarios] = useState([])
+  const [loading, setLoading] = useState(true)
 
   const handleDeleteUsuario = (id) => {
     setUsuarios(usuarios.filter(usuario => usuario.id !== id))
@@ -21,15 +23,17 @@ export default function ListOfUsuarios() {
       .then(data => {
         if (data.status === "success") {
           setUsuarios(data.data)
+          setLoading(false)
         }
         else {
           setUsuarios([])
+          setLoading(false)
         }
       })
       .catch(err => {
         console.log(err)
+        setLoading(false)
       })
-      console.log('fetchUsuarios')
   }, [])
 
 
@@ -59,6 +63,7 @@ export default function ListOfUsuarios() {
           />
         )
       }): <p className='msg-info'>No hay usuarios registrados</p>}
+      {loading && <Loader />}
     </div>
   )
 }
