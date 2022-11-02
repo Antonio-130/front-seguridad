@@ -5,7 +5,7 @@ import { deleteUsuario } from "services/usuario";
 
 import UsuarioContext from "context/UsuarioContext";
 
-export default function Usuario({ id, nombre, apellido, email, estado, reloadUsuarioDelete }) {
+export default function Usuario({ id, nombre, apellido, email, estado }) {
 
   const {hasAccion} = useContext(UsuarioContext)
 
@@ -13,7 +13,6 @@ export default function Usuario({ id, nombre, apellido, email, estado, reloadUsu
     deleteUsuario(id)
       .then((data) => {
         console.log(data);
-        reloadUsuarioDelete(id)
       })
       .catch((err) => {
         console.log(err);

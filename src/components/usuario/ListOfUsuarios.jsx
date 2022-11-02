@@ -1,9 +1,10 @@
-import React, {useState, useEffect, useContext } from 'react'
+import React, { useContext } from 'react'
 import Usuario from './Usuario'
 import 'styles/usuario/ListOfUsuarios.css'
 import Loader from 'components/Loader'
 import { getUsuarios } from 'services/usuario'
 import { Link } from 'react-router-dom'
+import { useQuery } from 'react-query'
 
 import UsuarioContext from 'context/UsuarioContext'
 
@@ -11,31 +12,9 @@ export default function ListOfUsuarios() {
 
   const {hasAccion} = useContext(UsuarioContext)
 
-  const [usuarios, setUsuarios] = useState([])
-  const [loading, setLoading] = useState(true)
-
-  const handleDeleteUsuario = (id) => {
-    setUsuarios(usuarios.filter(usuario => usuario.id !== id))
-  }
-
-  useEffect(() => {
-    getUsuarios()
-      .then(data => {
-        if (data.status === "success") {
-          setUsuarios(data.data)
-          setLoading(false)
-        }
-        else {
-          setUsuarios([])
-          setLoading(false)
-        }
-      })
-      .catch(err => {
-        console.log(err)
-        setLoading(false)
-      })
-  }, [])
-
+  const { isLoading, data: usuarios} = useQuery(['usuarios'], getUsuarios, {
+    refetchOnWindowFocus: false
+  })
 
   return (
     <div className='usuarios-container'>
@@ -51,7 +30,7 @@ export default function ListOfUsuarios() {
         <p>Estado</p>
         <p>Acciones</p>
       </header>
-      {usuarios.length > 0 ? usuarios.map(usuario => {
+      {usuarios?.data?.length > 0 ? usuarios?.data?.map(usuario => {
         return (
           <Usuario key={usuario.id}
             id={usuario.id}
@@ -59,11 +38,10 @@ export default function ListOfUsuarios() {
             apellido={usuario.apellido}
             email={usuario.email}
             estado={usuario.estado.nombre}
-            reloadUsuarioDelete={handleDeleteUsuario}
           />
         )
       }): <p className='msg-info'>No hay usuarios registrados</p>}
-      {loading && <Loader />}
+      {isLoading && <Loader />}
     </div>
   )
 }

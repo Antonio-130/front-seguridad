@@ -19,6 +19,7 @@ export default function DetailUsuario() {
           setUsuario({
             nombre: data.data.nombre,
             apellido: data.data.apellido,
+            username: data.data.username,
             email: data.data.email,
             estado: data.data.estado.nombre,
             grupos: data.data.grupos.map(grupo => grupo.nombre).join(', ')
@@ -33,6 +34,8 @@ export default function DetailUsuario() {
         console.log(err)
       })
   }, [id])
+
+  console.log(usuario)
 
   return (
     <div className='detail-usuario'>

@@ -3,6 +3,8 @@ import { Formik, Form } from 'formik';
 import { updateUsuarioValidation } from 'schemas/validation';
 import { useNavigate, useParams } from 'react-router-dom';
 import 'styles/Form.css';
+import Loader from 'components/Loader';
+import { useQuery, useQueries } from 'react-query';
 
 import FieldText from 'components/inputsForm/FieldText';
 import FieldButton from 'components/inputsForm/FieldButton';
@@ -11,15 +13,15 @@ import GrupoSection from './GrupoSection';
 
 import { getUsuarioById, updateUsuario } from 'services/usuario';
 import { getEstadosUsuario } from 'services/estadoUsuario';
+import { getGrupos } from 'services/grupo';
 
 export default function UpdateUsuario() {
-
-  const [estados, setEstados] = useState([]);
-  const [textSlicer, setTextSlicer] = useState("Grupos ➡");
 
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const [estados, setEstados] = useState([]);
+  const [grupos, setGrupos] = useState([]);
   const [initialValues, setInitialValues] = useState({
     nombre: '',
     apellido: '',
@@ -29,35 +31,105 @@ export default function UpdateUsuario() {
     estado: '',
     grupos: []
   });
+  const [textSlicer, setTextSlicer] = useState("Grupos ➡");
 
-  const handleGetEstados = () => {
-    getEstadosUsuario().then(response => {
-      setEstados(response.data);
-    }).catch(error => {
-      console.log(error);
-    });
-  }
+  /* useQueries([
+    useQuery(['usuarioUpdate', id], () => getUsuarioById(id), {
+      onSuccess: (res) => {
+        if (res.status === "success") {
+          setInitialValues({
+            nombre: res.data.nombre,
+            apellido: res.data.apellido,
+            username: res.data.username,
+            email: res.data.email,
+            confirmEmail: res.data.email,
+            estado: res.data.estado.id,
+            grupos: res.data.grupos.map(grupo => grupo.id.toString())
+          });
+        }
+      }, refetchOnWindowFocus: false }
+    ),
+    useQuery(['estadosUpdate'], getEstadosUsuario,{
+      onSuccess: (res) => {
+        if (res.status === "success") {
+          setEstados(res.data)
+        }
+      }, refetchOnWindowFocus: false }
+    ),
+    useQuery(['gruposUpdate'], getGrupos, {
+      onSuccess: (res) => {
+        if (res.status === "success") {
+          setGrupos(res.data.map(grupo => {
+            return {
+              id: grupo.id,
+              nombre: grupo.nombre
+            }
+          }))
+        }
+      }, refetchOnWindowFocus: false }
+    )
+  ]); */
 
-  const handleGetUsuario = (idUsuario) => {
-    getUsuarioById(idUsuario).then(response => {
-      setInitialValues({
-        nombre: response.data.nombre,
-        apellido: response.data.apellido,
-        username: response.data.username,
-        email: response.data.email,
-        confirmEmail: response.data.email,
-        estado: response.data.estado.id,
-        grupos: response.data.grupos.map(grupo => grupo.id.toString())
-      });
-    }).catch(error => {
-      console.log(error);
+  const { isLoading: loadingUsuario } = useQuery(['usuarioUpdate', id], () => getUsuarioById(id), {
+    onSuccess: (res) => {
+      if (res.status === "success") {
+        setInitialValues({
+          nombre: res.data.nombre,
+          apellido: res.data.apellido,
+          username: res.data.username,
+          email: res.data.email,
+          confirmEmail: res.data.email,
+          estado: res.data.estado.id,
+          grupos: res.data.grupos.map(grupo => grupo.id.toString())
+        });
+      }
+    }, refetchOnWindowFocus: false }
+  );
+  const { isLoading: loadingEstados } = useQuery(['estadosUpdate'], getEstadosUsuario,{
+    onSuccess: (res) => {
+      if (res.status === "success") {
+        setEstados(res.data)
+      }
+    }, refetchOnWindowFocus: false }
+  );
+  const { isLoading: loadingGrupos } = useQuery(['gruposUpdate'], getGrupos, {
+    onSuccess: (res) => {
+      if (res.status === "success") {
+        setGrupos(res.data.map(grupo => {
+          return {
+            id: grupo.id,
+            nombre: grupo.nombre
+          }
+        }))
+      }
+    }, refetchOnWindowFocus: false }
+  );
+
+  /* const handleGetData = async (idUsuario) => {
+    const usuario = await getUsuarioById(idUsuario);
+    const estados = await getEstadosUsuario();
+    const grupos = await getGrupos();
+    setInitialValues({
+      nombre: usuario.data.nombre,
+      apellido: usuario.data.apellido,
+      username: usuario.data.username,
+      email: usuario.data.email,
+      confirmEmail: usuario.data.email,
+      estado: usuario.data.estado.id,
+      grupos: usuario.data.grupos.map(grupo => grupo.id.toString())
     });
+    setEstados(estados.data);
+    setGrupos(grupos.data.map(grupo => {
+      return {
+        id: grupo.id,
+        nombre: grupo.nombre
+      }
+    }));
   }
 
   useEffect(() => {
-    handleGetUsuario(id);
-    handleGetEstados();
-  }, [id]);
+    handleGetData(id);
+  }, [id]); */
 
   const onSubmit = values => {
     delete values.confirmEmail;
@@ -146,10 +218,14 @@ export default function UpdateUsuario() {
             />
 
             <button type='button' onClick={handleToggleGrupos} className='btn-slicer'>{textSlicer}</button>
-            <GrupoSection />
+            <GrupoSection
+              label="Grupos"
+              values={grupos}
+            />
 
             <FieldButton type='submit' name='Actualizar Usuario' />
           </div>
+          {/* {loadingUsuario || loadingEstados || loadingGrupos ? <Loader /> : null} */}
         </Form>
       )}
     </Formik>
