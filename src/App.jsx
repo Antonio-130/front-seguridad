@@ -5,10 +5,13 @@ import Home from "components/Home";
 import Login from "components/auth/Login";
 import UsuarioRouter from "routes/UsuarioRouter";
 
+import useTokenValidation from "hooks/useTokenValidation";
+
 import UsuarioContext from "context/UsuarioContext";
 
 export default function App() {
-  const {isLogged, hasAccesoByTag} = useContext(UsuarioContext)
+  const {isLogged, hasAccesoByTag, handleAutoLogin, handleLogout} = useContext(UsuarioContext)
+  useTokenValidation(handleAutoLogin, handleLogout)
 
   return (
     <Router>

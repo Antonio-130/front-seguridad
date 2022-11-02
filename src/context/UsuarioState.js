@@ -1,15 +1,12 @@
 import React, {useReducer} from "react";
 import { types,  usuarioReducer } from "./UsuarioReducer";
 import UsuarioContext from "./UsuarioContext";
-import { verifyAndLogin } from "services/auth";
-
-import useLocalStorage from "hooks/useLocalStorage";
 
 const UsuarioState = ({ children }) => {
 
-  const [usuarioInStorage, setUsuario] = useLocalStorage("usuario");
-  const [accionesInStorage, setAcciones] = useLocalStorage("acciones");
-  const [tokenInStorage, setToken] = useLocalStorage("token");
+  let usuarioInStorage = JSON.parse(localStorage.getItem("usuario"));
+  let accionesInStorage = JSON.parse(localStorage.getItem("acciones"));
+  let tokenInStorage = JSON.parse(localStorage.getItem("token"));
 
   const initialValues = {
     usuario: usuarioInStorage || {},
@@ -19,15 +16,20 @@ const UsuarioState = ({ children }) => {
 
   const [state, dispatch] = useReducer(usuarioReducer, initialValues);
 
-  verifyAndLogin(types.AUTO_LOGIN, dispatch);
-
   const handleLogout = () => {
     dispatch({
       type: types.LOGOUT,
     });
-    setUsuario({});
-    setAcciones([]);
-    setToken("");
+    localStorage.removeItem("usuario");
+    localStorage.removeItem("acciones");
+    localStorage.removeItem("token");
+  };
+
+  const handleAutoLogin = (usuario, acciones) => {
+    dispatch({
+      type: types.AUTO_LOGIN,
+      payload: { usuario, acciones }
+    });
   };
 
   const hasAccesoByTag = (tag) => {
@@ -47,6 +49,7 @@ const UsuarioState = ({ children }) => {
         acciones: state.acciones,
         isLogged: state.isLogged,
         handleLogout,
+        handleAutoLogin,
         hasAccesoByTag,
         hasAccion,
         dispatch,

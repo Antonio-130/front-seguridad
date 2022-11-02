@@ -11,17 +11,11 @@ import UsuarioContext from 'context/UsuarioContext';
 
 import { login } from 'services/auth';
 
-import useLocalStorage from 'hooks/useLocalStorage';
-
 export default function Login() {
 
   const {types, dispatch} = useContext(UsuarioContext);
 
   let navigate = useNavigate();
-
-  const [, setToken] = useLocalStorage('token');
-  const [, setAcciones] = useLocalStorage('acciones');
-  const [, setUsuario] = useLocalStorage('usuario');
 
   const [error, setError] = useState(false);
 
@@ -41,9 +35,9 @@ export default function Login() {
             acciones: res.data[2].acciones,
           },
         });
-        setUsuario(res.data[0]);
-        setToken(res.data[1].token);
-        setAcciones(res.data[2].acciones);
+        localStorage.setItem('usuario', JSON.stringify(res.data[0]));
+        localStorage.setItem('token', JSON.stringify(res.data[1].token));
+        localStorage.setItem('acciones', JSON.stringify(res.data[2].acciones));
         setError(false);
         navigate('/');
       }

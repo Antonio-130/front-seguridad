@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext } from 'react'
 import Usuario from './Usuario'
 import 'styles/usuario/ListOfUsuarios.css'
 import { getUsuarios } from 'services/usuario'
@@ -12,27 +12,24 @@ export default function ListOfUsuarios() {
 
   const [usuarios, setUsuarios] = useState([])
 
-  const handleGetUsuarios = () => {
-    getUsuarios()
-    .then(data => {
-      if (data.status === "success") {
-        setUsuarios(data.data)
-      }
-      else {
-        setUsuarios([])
-      }
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  }
-
   const handleDeleteUsuario = (id) => {
     setUsuarios(usuarios.filter(usuario => usuario.id !== id))
   }
 
   useEffect(() => {
-    handleGetUsuarios()
+    getUsuarios()
+      .then(data => {
+        if (data.status === "success") {
+          setUsuarios(data.data)
+        }
+        else {
+          setUsuarios([])
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+      console.log('fetchUsuarios')
   }, [])
 
 
