@@ -148,7 +148,7 @@ option:checked {
 }
 
 /* GrupoSection */
-.grupos-container {
+.checkboxGroup-container {
   position: absolute;
   display: none;
   width: 100%;
@@ -171,7 +171,7 @@ option:checked {
   -o-transform: translateX(100%);
 }
 
-.grupos-list {
+.list-checkboxs {
   display: flex;
   flex-direction: column;
   overflow-y: auto;

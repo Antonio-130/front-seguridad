@@ -18,7 +18,6 @@ export default function Header() {
             {isLogged && hasAccesoByTag('usuarios') && <Link to="/usuarios">Usuarios</Link>}
             {isLogged && hasAccesoByTag('grupos') && <Link to="/grupos">Grupos</Link>}
             {isLogged && hasAccesoByTag('estadosUsuario') && <Link to="/estadosUsuario">Estados de Usuario</Link>}
-            {isLogged && hasAccesoByTag('acciones') && <Link to="/acciones">Acciones</Link>}
           </nav>
         </div>
         <div className="button-container">

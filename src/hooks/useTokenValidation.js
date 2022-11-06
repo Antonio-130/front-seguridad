@@ -1,10 +1,23 @@
 import { useEffect } from 'react'
 import { autoLogin, verifyToken } from 'services/auth';
+import { useQuery } from 'react-query';
 
 export default function useTokenValidation(handleAutoLogin, handleLogout) {
   let token = JSON.parse(localStorage.getItem("token"));
   let usuario = JSON.parse(localStorage.getItem("usuario"));
   let acciones = JSON.parse(localStorage.getItem("acciones"));
+
+  useQuery(['verifyToken', token], () => verifyToken(token), {
+    enabled: Boolean(token),
+    refetchOnWindowFocus: false,
+    retry: false,
+    onSuccess: (data) => {
+      if (data.status === 219) {
+        removeLocalStorage();
+        handleLogout();
+      }
+    }
+  });
 
   useEffect(() => {
     if (token && (!usuario || !acciones)) {
@@ -21,16 +34,6 @@ export default function useTokenValidation(handleAutoLogin, handleLogout) {
     if (!token && (usuario || acciones)) {
       handleLogout();
       removeLocalStorage();
-    }
-    if (token && usuario && acciones) {
-      verifyToken(token).then((res) => {
-        if (res.status === 419) {
-          removeLocalStorage();
-          handleLogout();
-        }
-      }).catch((err) => {
-        console.log(err);
-      });
     }
   }, [token, usuario, acciones, handleAutoLogin, handleLogout]);
 }

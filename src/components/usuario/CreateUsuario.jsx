@@ -6,9 +6,10 @@ import 'styles/Form.css';
 import FieldText from 'components/inputsForm/FieldText';
 import FieldButton from 'components/inputsForm/FieldButton';
 import FieldSelect from 'components/inputsForm/FieldSelect';
-import GrupoSection from './GrupoSection';
+import CheckboxGroup from './CheckboxGroup';
 import { createUsuario } from 'services/usuario';
 import { getEstadosUsuario } from 'services/estadoUsuario';
+import { getGrupos } from 'services/grupo';
 import { useNavigate } from 'react-router-dom';
 
 export default function CreateUsuario() {
@@ -16,6 +17,8 @@ export default function CreateUsuario() {
   const navigate = useNavigate()
 
   const [estados, setEstados] = useState([]);
+
+  const [grupos, setGrupos] = useState([]);
 
   const [textSlicer, setTextSlicer] = useState("Grupos ➡");
 
@@ -31,16 +34,20 @@ export default function CreateUsuario() {
     grupos: []
   }
 
-  const handleGetEstados = () => {
-    getEstadosUsuario().then(response => {
-      setEstados(response.data);
-    }).catch(error => {
-      console.log(error);
-    });
+  const handleGetData = async () => {
+    const estados = await getEstadosUsuario();
+    const grupos = await getGrupos();
+    setEstados(estados.data);
+    setGrupos(grupos.data.map((grupo) => {
+      return {
+        id: grupo.id,
+        nombre: grupo.nombre
+      }
+    }));
   }
 
   useEffect(() => {
-    handleGetEstados();
+    handleGetData();
   }, []);
 
   const onSubmit = values => {
@@ -62,7 +69,7 @@ export default function CreateUsuario() {
   }
 
   const handleToggleGrupos = () => {
-    document.querySelector('.grupos-container').classList.toggle('active');
+    document.querySelector('.checkboxGroup-container').classList.toggle('active');
     if (textSlicer === "Grupos ➡") {
       setTextSlicer("⬅ Usuario");
     } else {
@@ -149,7 +156,11 @@ export default function CreateUsuario() {
             />
 
             <button type='button' onClick={handleToggleGrupos} className='btn-slicer'>{textSlicer}</button>
-            <GrupoSection />
+            <CheckboxGroup
+              label='Grupos'
+              name='grupos'
+              values={grupos}
+            />
 
             <FieldButton type='submit' name='Crear Usuario' />
           </div>
