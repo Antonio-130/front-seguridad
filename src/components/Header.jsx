@@ -1,11 +1,11 @@
-import React, {useContext} from "react";
-import 'styles/Header.css';
-import { Link, useNavigate } from "react-router-dom";
-import UsuarioContext from "context/UsuarioContext";
+import React, {useContext} from "react"
+import 'styles/Header.css'
+import { Link, useNavigate } from "react-router-dom"
+import UsuarioContext from "context/UsuarioContext"
 
 export default function Header() {
   const {isLogged, handleLogout, hasAccesoByTag} = useContext(UsuarioContext)
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   return (
     <>
       <div className="empty-space"></div>
@@ -30,5 +30,5 @@ export default function Header() {
         </div>
       </div>
     </>
-  );
+  )
 }

@@ -4,22 +4,22 @@ export const getEstadosUsuario = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/estadosUsuario`, {
     method: 'GET',
     headers: getHeaders()
-  });
+  })
 
-  const data = await response.json();
+  const data = await response.json()
 
-  return data;
+  return data
 }
 
 export const getEstadoUsuarioById = async (id) => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/estadosUsuario/${id}`, {
     method: 'GET',
     headers: getHeaders()
-  });
+  })
 
-  const data = await response.json();
+  const data = await response.json()
 
-  return data;
+  return data
 }
 
 export const createEstadoUsuario = async (estadoUsuario) => {
@@ -27,11 +27,11 @@ export const createEstadoUsuario = async (estadoUsuario) => {
     method: 'POST',
     headers: getHeaders(),
     body: JSON.stringify(estadoUsuario)
-  });
+  })
 
-  const data = await response.json();
+  const data = await response.json()
 
-  return data;
+  return data
 }
 
 export const updateEstadoUsuario = async (estadoUsuario) => {
@@ -39,20 +39,20 @@ export const updateEstadoUsuario = async (estadoUsuario) => {
     method: 'PUT',
     headers: getHeaders(),
     body: JSON.stringify(estadoUsuario)
-  });
+  })
 
-  const data = await response.json();
+  const data = await response.json()
 
-  return data;
+  return data
 }
 
 export const deleteEstadoUsuario = async (id) => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/estadosUsuario/${id}`, {
     method: 'DELETE',
     headers: getHeaders()
-  });
+  })
 
-  const data = await response.json();
+  const data = await response.json()
 
-  return data;
+  return data
 }

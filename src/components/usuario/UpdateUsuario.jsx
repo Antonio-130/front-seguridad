@@ -33,6 +33,18 @@ export default function UpdateUsuario() {
     grupos: []
   });
 
+  const handleGetData = async (idUsuario) => {
+    const usuario = await getUsuarioById(idUsuario);
+    const estados = await getEstadosUsuario();
+    const grupos = await getGrupos();
+
+    return {
+      usuario: usuario.data,
+      estados: estados.data,
+      grupos: grupos.data
+    }
+  }
+
   const { isLoading } = useQuery(['usuarioUpdateData', id], () => handleGetData(id), {
     onSuccess: (data) => {
       const { usuario, estados, grupos } = data;
@@ -49,23 +61,11 @@ export default function UpdateUsuario() {
         username: usuario.username,
         email: usuario.email,
         confirmEmail: usuario.email,
-        estado: usuario.estado,
+        estado: usuario.estado.id,
         grupos: usuario.grupos.map((grupo) => grupo.id.toString())
       });
     }, refetchOnWindowFocus: false }
   );
-
-  const handleGetData = async (idUsuario) => {
-    const usuario = await getUsuarioById(idUsuario);
-    const estados = await getEstadosUsuario();
-    const grupos = await getGrupos();
-
-    return {
-      usuario: usuario.data,
-      estados: estados.data,
-      grupos: grupos.data
-    }
-  }
 
   const onSubmit = values => {
     delete values.confirmEmail;

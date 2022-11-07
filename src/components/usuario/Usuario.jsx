@@ -1,9 +1,9 @@
-import React, {useContext} from "react";
-import "styles/usuario/Usuario.css";
-import { Link } from "react-router-dom";
-import { deleteUsuario } from "services/usuario";
+import React, {useContext} from "react"
+import "styles/usuario/Usuario.css"
+import { Link } from "react-router-dom"
+import { deleteUsuario } from "services/usuario"
 
-import UsuarioContext from "context/UsuarioContext";
+import UsuarioContext from "context/UsuarioContext"
 
 export default function Usuario({ id, nombre, apellido, email, estado }) {
 
@@ -12,12 +12,12 @@ export default function Usuario({ id, nombre, apellido, email, estado }) {
   const handleDeleteUsuario = () => {
     deleteUsuario(id)
       .then((data) => {
-        console.log(data);
+        console.log(data)
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err)
       })
-  };
+  }
 
   return (
     <>
@@ -33,5 +33,5 @@ export default function Usuario({ id, nombre, apellido, email, estado }) {
         </div>
       </div>
     </>
-  );
+  )
 }

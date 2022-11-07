@@ -1,5 +1,5 @@
 import React from 'react'
-import { ErrorMessage } from 'formik';
+import { ErrorMessage } from 'formik'
 
 export default function Message({errors, touched, name}) {
   return (

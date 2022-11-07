@@ -1,25 +1,29 @@
-import React, {useState, useEffect} from 'react'
-import { Formik, Form } from 'formik';
-import { createUsuarioValidation } from 'schemas/validation';
-import 'styles/Form.css';
+import React, { useState } from 'react'
+import { Formik, Form } from 'formik'
+import { createUsuarioValidation } from 'schemas/validation'
+import 'styles/Form.css'
+import Loader from 'components/Loader'
 
-import FieldText from 'components/inputsForm/FieldText';
-import FieldButton from 'components/inputsForm/FieldButton';
-import FieldSelect from 'components/inputsForm/FieldSelect';
-import CheckboxGroup from 'components/inputsForm/CheckboxGroup';
-import ButtonSlicer from 'components/inputsForm/ButtonSlicer';
-import { createUsuario } from 'services/usuario';
-import { getEstadosUsuario } from 'services/estadoUsuario';
-import { getGrupos } from 'services/grupo';
-import { useNavigate } from 'react-router-dom';
+import FieldText from 'components/inputsForm/FieldText'
+import FieldButton from 'components/inputsForm/FieldButton'
+import FieldSelect from 'components/inputsForm/FieldSelect'
+import CheckboxGroup from 'components/inputsForm/CheckboxGroup'
+import ButtonSlicer from 'components/inputsForm/ButtonSlicer'
+import { createUsuario } from 'services/usuario'
+import { getEstadosUsuario } from 'services/estadoUsuario'
+import { getGrupos } from 'services/grupo'
+import { useNavigate } from 'react-router-dom'
+
+import { useQuery } from 'react-query'
+
 
 export default function CreateUsuario() {
 
   const navigate = useNavigate()
 
-  const [estados, setEstados] = useState([]);
+  const [estados, setEstados] = useState([])
 
-  const [grupos, setGrupos] = useState([]);
+  const [grupos, setGrupos] = useState([])
 
   const initialValues = {
     nombre: '',
@@ -34,37 +38,43 @@ export default function CreateUsuario() {
   }
 
   const handleGetData = async () => {
-    const estados = await getEstadosUsuario();
-    const grupos = await getGrupos();
-    setEstados(estados.data);
-    setGrupos(grupos.data.map((grupo) => {
-      return {
-        id: grupo.id,
-        nombre: grupo.nombre
-      }
-    }));
-  }
+    const estados = await getEstadosUsuario()
+    const grupos = await getGrupos()
 
-  useEffect(() => {
-    handleGetData();
-  }, []);
+    return {
+      estados: estados.data,
+      grupos: grupos.data
+    }
+  }
+  const {isLoading} = useQuery('createUsuarioData', handleGetData, {
+    onSuccess: (data) => {
+      const {estados, grupos} = data
+      setEstados(estados)
+      setGrupos(grupos.map((grupo) => {
+        return {
+          id: grupo.id,
+          nombre: grupo.nombre
+        }
+      }))
+    }
+  })
 
   const onSubmit = values => {
-    delete values.confirmEmail;
-    delete values.confirmClave;
+    delete values.confirmEmail
+    delete values.confirmClave
 
-    alert(JSON.stringify(values));
+    alert(JSON.stringify(values))
 
     createUsuario(values).then(response => {
-      console.log(response);
+      console.log(response)
       setTimeout(() => {
-        navigate(-1);
+        navigate(-1)
       }
-      , 1000);
+      , 1000)
     }
     ).catch(error => {
-      console.log(error);
-    });
+      console.log(error)
+    })
   }
 
   return (
@@ -157,6 +167,7 @@ export default function CreateUsuario() {
 
             <FieldButton type='submit' name='Crear Usuario' />
           </div>
+          {isLoading && <Loader />}
         </Form>
       )}
     </Formik>

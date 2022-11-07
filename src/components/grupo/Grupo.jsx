@@ -1,8 +1,8 @@
 import React, {useContext, useState} from 'react'
 import { Link } from 'react-router-dom'
-import UsuarioContext from 'context/UsuarioContext';
+import UsuarioContext from 'context/UsuarioContext'
 import 'styles/grupo/Grupo.css'
-import { useAccionesSections } from 'hooks/useAccionesSections';
+import { useAccionesSections } from 'hooks/useAccionesSections'
 
 export default function Grupo({id, nombre, descripcion, acciones}) {
 
@@ -33,7 +33,7 @@ export default function Grupo({id, nombre, descripcion, acciones}) {
         </div>
       )}
     </>
-  );
+  )
 }
 
 const ListOfAcciones = ({sections}) => {

@@ -73,7 +73,7 @@ export const loginValidation = Yup.object({
     .trim()
 })
 
-export const createGrupoValidation = Yup.object({
+export const createAndUpdateGrupoValidation = Yup.object({
   nombre: Yup.string()
     .required('Requerido')
     .trim()

@@ -5,11 +5,11 @@ export const login = async (values) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(values)
-  });
+  })
 
-  const data = await response.json();
+  const data = await response.json()
 
-  return data;
+  return data
 }
 
 export const autoLogin = async (token) => {
@@ -18,11 +18,11 @@ export const autoLogin = async (token) => {
     headers: {
       'Content-Type': 'application/json',
     }
-  });
+  })
 
-  const data = await response.json();
+  const data = await response.json()
 
-  return data;
+  return data
 }
 
 export const verifyToken = async (token) => {
@@ -32,5 +32,5 @@ export const verifyToken = async (token) => {
       'Content-Type': 'application/json',
     }
   })
-  return response;
+  return response
 }

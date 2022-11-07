@@ -1,19 +1,19 @@
 import React, {useState} from 'react'
-import 'styles/Form.css';
+import 'styles/Form.css'
 
 export default function ButtonSlicer({fisrtSection, secondSection}) {
 
-  const [textSlicer, setTextSlicer] = useState(`${secondSection} ➡`);
+  const [textSlicer, setTextSlicer] = useState(`${secondSection} ➡`)
 
   const handleToggleSection = () => {
-    const $ = document.querySelector.bind(document);
-    $('.checkboxGroup-container').classList.toggle('active');
-    $('.form-container').classList.toggle('active-scale');
-    $('.form-container').classList.toggle('inactive');
+    const $ = document.querySelector.bind(document)
+    $('.checkboxGroup-container').classList.toggle('active')
+    $('.form-container').classList.toggle('active-scale')
+    $('.form-container').classList.toggle('inactive')
     if (textSlicer === `${secondSection} ➡`) {
-      setTextSlicer(`⬅ ${fisrtSection}`);
+      setTextSlicer(`⬅ ${fisrtSection}`)
     } else {
-      setTextSlicer(`${secondSection} ➡`);
+      setTextSlicer(`${secondSection} ➡`)
     }
   }
 
