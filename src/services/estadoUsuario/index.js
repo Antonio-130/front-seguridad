@@ -1,9 +1,9 @@
-import {headers} from "services/headers";
+import { getHeaders } from '../headers'
 
 export const getEstadosUsuario = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/estadosUsuario`, {
     method: 'GET',
-    headers
+    headers: getHeaders()
   });
 
   const data = await response.json();
@@ -14,7 +14,7 @@ export const getEstadosUsuario = async () => {
 export const getEstadoUsuarioById = async (id) => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/estadosUsuario/${id}`, {
     method: 'GET',
-    headers
+    headers: getHeaders()
   });
 
   const data = await response.json();
@@ -25,7 +25,7 @@ export const getEstadoUsuarioById = async (id) => {
 export const createEstadoUsuario = async (estadoUsuario) => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/estadosUsuario`, {
     method: 'POST',
-    headers,
+    headers: getHeaders(),
     body: JSON.stringify(estadoUsuario)
   });
 
@@ -37,7 +37,7 @@ export const createEstadoUsuario = async (estadoUsuario) => {
 export const updateEstadoUsuario = async (estadoUsuario) => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/estadosUsuario/${estadoUsuario.id}`, {
     method: 'PUT',
-    headers,
+    headers: getHeaders(),
     body: JSON.stringify(estadoUsuario)
   });
 
@@ -49,7 +49,7 @@ export const updateEstadoUsuario = async (estadoUsuario) => {
 export const deleteEstadoUsuario = async (id) => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/estadosUsuario/${id}`, {
     method: 'DELETE',
-    headers
+    headers: getHeaders()
   });
 
   const data = await response.json();

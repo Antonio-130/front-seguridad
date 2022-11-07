@@ -1,9 +1,9 @@
-import { headers } from "services/headers";
+import { getHeaders } from '../headers'
 
 export const getAcciones = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/acciones`, {
     method: 'GET',
-    headers
+    headers: getHeaders()
   });
 
   const data = await response.json();
@@ -14,7 +14,7 @@ export const getAcciones = async () => {
 export const getAccionById = async (id) => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/acciones/${id}`, {
     method: 'GET',
-    headers
+    headers: getHeaders()
   });
 
   const data = await response.json();
@@ -25,7 +25,7 @@ export const getAccionById = async (id) => {
 export const createAccion = async (accion) => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/acciones`, {
     method: 'POST',
-    headers,
+    headers: getHeaders(),
     body: JSON.stringify(accion)
   });
 
@@ -37,7 +37,7 @@ export const createAccion = async (accion) => {
 export const updateAccion = async (accion) => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/acciones/${accion.id}`, {
     method: 'PUT',
-    headers,
+    headers: getHeaders(),
     body: JSON.stringify(accion)
   });
 
@@ -49,7 +49,7 @@ export const updateAccion = async (accion) => {
 export const deleteAccion = async (id) => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/acciones/${id}`, {
     method: 'DELETE',
-    headers
+    headers: getHeaders()
   });
 
   const data = await response.json();

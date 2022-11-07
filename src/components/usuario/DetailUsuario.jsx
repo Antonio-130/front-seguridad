@@ -35,8 +35,6 @@ export default function DetailUsuario() {
       })
   }, [id])
 
-  console.log(usuario)
-
   return (
     <div className='detail-usuario'>
       <h3>Usuario: {usuario.username}</h3>
