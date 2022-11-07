@@ -9,7 +9,8 @@ import { useQuery } from 'react-query';
 import FieldText from 'components/inputsForm/FieldText';
 import FieldButton from 'components/inputsForm/FieldButton';
 import FieldSelect from 'components/inputsForm/FieldSelect';
-import CheckboxGroup from './CheckboxGroup';
+import CheckboxGroup from 'components/inputsForm/CheckboxGroup';
+import ButtonSlicer from 'components/inputsForm/ButtonSlicer';
 
 import { getUsuarioById, updateUsuario } from 'services/usuario';
 import { getEstadosUsuario } from 'services/estadoUsuario';
@@ -31,7 +32,6 @@ export default function UpdateUsuario() {
     estado: '',
     grupos: []
   });
-  const [textSlicer, setTextSlicer] = useState("Grupos ➡");
 
   const { isLoading } = useQuery(['usuarioUpdateData', id], () => handleGetData(id), {
     onSuccess: (data) => {
@@ -81,15 +81,6 @@ export default function UpdateUsuario() {
     ).catch(error => {
       console.log(error);
     });
-  }
-
-  const handleToggleGrupos = () => {
-    document.querySelector('.checkboxGroup-container').classList.toggle('active');
-    if (textSlicer === "Grupos ➡") {
-      setTextSlicer("⬅ Usuario");
-    } else {
-      setTextSlicer("Grupos ➡");
-    }
   }
 
   return (
@@ -153,7 +144,11 @@ export default function UpdateUsuario() {
               options={estados}
             />
 
-            <button type='button' onClick={handleToggleGrupos} className='btn-slicer'>{textSlicer}</button>
+            <ButtonSlicer
+              fisrtSection="Usuario"
+              secondSection="Grupos"
+            />
+
             <CheckboxGroup
               label="Grupos"
               name="grupos"

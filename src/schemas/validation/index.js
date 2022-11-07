@@ -72,3 +72,15 @@ export const loginValidation = Yup.object({
     .min(6, 'La clave debe tener más de 6 caracteres')
     .trim()
 })
+
+export const createGrupoValidation = Yup.object({
+  nombre: Yup.string()
+    .required('Requerido')
+    .trim()
+    .matches(/^[a-zA-Z]+$/, 'El nombre solo puede contener letras')
+    .max(30, "Nombre muy largo"),
+  descripcion: Yup.string()
+    .required('Requerido')
+    .trim()
+    .max(100, "Descripcion muy larga"),
+})

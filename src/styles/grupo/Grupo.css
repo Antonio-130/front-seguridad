@@ -1,0 +1,65 @@
+@import url('styles/Variables.css');
+
+.grupo-container {
+  color: var(--c-white);
+  width: max-content;
+  height: 30px;
+  margin: 10px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--c-ash-gray);
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+.grupo-container p {
+  border-right: 2px solid var(--c-ash-gray);
+  text-align: center;
+  padding: 5px 50px;
+}
+
+.grupo-container button {
+  border: none;
+  background: none;
+  color: var(--c-white);
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.grupo-container button a {
+  color: var(--c-white);
+  text-decoration: underline;
+}
+
+.acciones-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.tag {
+  color: var(--c-white);
+  border: 1px solid var(--c-ash-gray);
+  border-radius: 10px;
+  margin: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0 20px;
+}
+
+.tag p {
+  margin: 0;
+  padding: 8px 0;
+}
+
+.tag-title {
+  text-decoration: underline;
+}

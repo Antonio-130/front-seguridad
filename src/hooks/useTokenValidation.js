@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { autoLogin, verifyToken } from 'services/auth';
 import { useQuery } from 'react-query';
 
-export default function useTokenValidation(handleAutoLogin, handleLogout) {
+export const useTokenValidation = (handleAutoLogin, handleLogout) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let usuario = JSON.parse(localStorage.getItem("usuario"));
   let acciones = JSON.parse(localStorage.getItem("acciones"));
@@ -12,7 +12,7 @@ export default function useTokenValidation(handleAutoLogin, handleLogout) {
     refetchOnWindowFocus: false,
     retry: false,
     onSuccess: (data) => {
-      if (data.status === 219) {
+      if (data.status === 419) {
         removeLocalStorage();
         handleLogout();
       }

@@ -6,7 +6,7 @@ import Login from "components/auth/Login";
 import UsuarioRouter from "routes/UsuarioRouter";
 import GrupoRouter from "routes/GrupoRouter";
 
-import useTokenValidation from "hooks/useTokenValidation";
+import {useTokenValidation} from "hooks/useTokenValidation";
 
 import UsuarioContext from "context/UsuarioContext";
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import {Field} from 'formik'
+import 'styles/Form.css'
 
 export default function FieldCheckbox({label, name, value}) {
   return (

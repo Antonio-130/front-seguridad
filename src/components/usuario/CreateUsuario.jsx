@@ -6,7 +6,8 @@ import 'styles/Form.css';
 import FieldText from 'components/inputsForm/FieldText';
 import FieldButton from 'components/inputsForm/FieldButton';
 import FieldSelect from 'components/inputsForm/FieldSelect';
-import CheckboxGroup from './CheckboxGroup';
+import CheckboxGroup from 'components/inputsForm/CheckboxGroup';
+import ButtonSlicer from 'components/inputsForm/ButtonSlicer';
 import { createUsuario } from 'services/usuario';
 import { getEstadosUsuario } from 'services/estadoUsuario';
 import { getGrupos } from 'services/grupo';
@@ -19,8 +20,6 @@ export default function CreateUsuario() {
   const [estados, setEstados] = useState([]);
 
   const [grupos, setGrupos] = useState([]);
-
-  const [textSlicer, setTextSlicer] = useState("Grupos ➡");
 
   const initialValues = {
     nombre: '',
@@ -66,15 +65,6 @@ export default function CreateUsuario() {
     ).catch(error => {
       console.log(error);
     });
-  }
-
-  const handleToggleGrupos = () => {
-    document.querySelector('.checkboxGroup-container').classList.toggle('active');
-    if (textSlicer === "Grupos ➡") {
-      setTextSlicer("⬅ Usuario");
-    } else {
-      setTextSlicer("Grupos ➡");
-    }
   }
 
   return (
@@ -155,7 +145,10 @@ export default function CreateUsuario() {
               options={estados}
             />
 
-            <button type='button' onClick={handleToggleGrupos} className='btn-slicer'>{textSlicer}</button>
+            <ButtonSlicer
+              fisrtSection="Usuario"
+              secondSection="Grupos"
+            />
             <CheckboxGroup
               label='Grupos'
               name='grupos'

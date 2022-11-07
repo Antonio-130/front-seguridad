@@ -28,7 +28,7 @@ export default function ListOfUsuarios() {
         <p>Apellido</p>
         <p>Email</p>
         <p>Estado</p>
-        <p>Acciones</p>
+        <p></p>
       </header>
       {usuarios?.data?.length > 0 ? usuarios?.data?.map(usuario => {
         return (
