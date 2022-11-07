@@ -2,6 +2,7 @@ import React, {useContext} from "react"
 import 'styles/Header.css'
 import { Link, useNavigate } from "react-router-dom"
 import UsuarioContext from "context/UsuarioContext"
+import logo from "assets/security-logo.svg"
 
 export default function Header() {
   const {isLogged, handleLogout, hasAccesoByTag} = useContext(UsuarioContext)
@@ -10,7 +11,9 @@ export default function Header() {
     <>
       <div className="empty-space"></div>
       <div className="header-container">
-        <div>Logo</div>
+        <div>
+          <img src={logo} alt="security logo" title="logo security" className="img-logo" onClick={() => navigate("/")} />
+        </div>
         <div className="main-container">
           <h2>Menu</h2>
           <nav>
