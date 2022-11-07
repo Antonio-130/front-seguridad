@@ -1,11 +1,12 @@
 import React, {useContext} from 'react'
 import UsuarioContext from 'context/UsuarioContext'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import 'styles/grupo/ListOfGrupos.css'
 import Grupo from './Grupo'
 import Loader from 'components/Loader'
-import {getGrupos} from 'services/grupo'
-import {useQuery} from 'react-query'
+import { getGrupos } from 'services/grupo'
+import { useQuery } from 'react-query'
+import { AddIcon } from 'assets/ui'
 
 export default function ListOfGrupos() {
   const {hasAccion} = useContext(UsuarioContext)
@@ -19,16 +20,17 @@ export default function ListOfGrupos() {
 
   return (
     <div className='grupos-container'>
-      {hasAccion("create_grupo") && (
-        <div className='add-grupo'>
-          <Link to="/grupos/add">Añadir</Link>
-        </div>
-      )}
       <header className='header-list'>
         <p>Nombre</p>
         <p>Descripcion</p>
         <p>Acciones</p>
-        <p></p>
+        <p>
+        {hasAccion("create_grupo") && (
+          <Link to="/grupos/add" className='add-grupo'>
+            <AddIcon name="grupo" />
+          </Link>
+        )}
+        </p>
       </header>
       {grupos?.data?.length > 0 ? grupos?.data?.map(grupo => {
         return (
@@ -40,7 +42,7 @@ export default function ListOfGrupos() {
             acciones={grupo.acciones}
           />
         )
-      }): <p className='msg-info'>No hay usuarios registrados</p>}
+      }): <p className='msg-info'>No hay grupos registrados</p>}
       {isLoading && <Loader />}
     </div>
   )

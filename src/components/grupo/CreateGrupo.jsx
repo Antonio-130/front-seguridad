@@ -92,6 +92,7 @@ export default function CreateGrupo() {
             />
 
             <FieldButton type='submit' name='Crear Grupo' />
+            <FieldButton type='button' name='Cancelar' onClick={() => navigate(-1)} />
           </div>
           {isLoading && <Loader />}
         </Form>

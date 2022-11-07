@@ -13,7 +13,6 @@
   -moz-border-radius: 10px;
   -ms-border-radius: 10px;
   -o-border-radius: 10px;
-  position: relative;
 }
 
 .header-list{
@@ -39,6 +38,7 @@
 
 .header-list p:last-child{
   border-right: none;
+  position: relative;
 }
 
 .msg-info {
@@ -47,8 +47,8 @@
 
 .add-usuario{
   position: absolute;
-  top: -30px;
-  right: 10px;
+  top: -16px;
+  transform: translateX(-50%);
 }
 
 .add-usuario a{

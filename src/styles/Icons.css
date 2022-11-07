@@ -1,0 +1,26 @@
+.icon {
+  width: 22px;
+  height: 22px;
+  transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+}
+
+.add {
+  width: 32px;
+  height: 32px;
+}
+
+.arrow{
+  height: 18px;
+}
+
+.icon:hover {
+  transform: scale(1.2);
+  -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  -o-transform: scale(1.2);
+}

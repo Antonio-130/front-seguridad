@@ -166,6 +166,7 @@ export default function CreateUsuario() {
             />
 
             <FieldButton type='submit' name='Crear Usuario' />
+            <FieldButton type='button' name='Cancelar' onClick={() => navigate(-1)} />
           </div>
           {isLoading && <Loader />}
         </Form>

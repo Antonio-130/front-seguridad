@@ -1,39 +1,36 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useContext} from 'react'
 import "styles/usuario/DetailUsuario.css"
 import Loader from 'components/Loader'
+import UsuarioContext from 'context/UsuarioContext'
+
+import FieldButton from 'components/inputsForm/FieldButton'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getUsuarioById } from 'services/usuario'
 
+import { useQuery } from 'react-query'
+
 export default function DetailUsuario() {
+
+  const { hasAccion } = useContext(UsuarioContext)
 
   const { id } = useParams()
   const navigate = useNavigate()
 
   const [usuario, setUsuario] = useState({})
-  const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    getUsuarioById(id)
-      .then((data) => {
-        if (data.status === "success") {
-          setUsuario({
-            nombre: data.data.nombre,
-            apellido: data.data.apellido,
-            username: data.data.username,
-            email: data.data.email,
-            estado: data.data.estado.nombre,
-            grupos: data.data.grupos.map(grupo => grupo.nombre).join(', ')
-          })
-          setLoading(false)
-        }
-        else {
-          setUsuario({})
-        }
+  const { isLoading } = useQuery(['usuario', id], () => getUsuarioById(id), {
+    onSuccess: (data) => {
+      const usuario = data.data
+      setUsuario({
+        nombre: usuario.nombre,
+        apellido: usuario.apellido,
+        username: usuario.username,
+        email: usuario.email,
+        estado: usuario.estado.nombre,
+        grupos: usuario.grupos.map(grupo => grupo.nombre).join(', ')
       })
-      .catch((err) => {
-        console.log(err)
-      })
-  }, [id])
+    }, refetchOnWindowFocus: false
+  })
 
   return (
     <div className='detail-usuario'>
@@ -43,8 +40,11 @@ export default function DetailUsuario() {
       <p>Email: {usuario.email}</p>
       <p>Estado: {usuario.estado}</p>
       <p>Grupos: {usuario.grupos}</p>
-      <button onClick={() => navigate(-1)}>Volver</button>
-      {loading && <Loader />}
+      {hasAccion("update_usuario") && (
+        <FieldButton type='button' name='Editar' onClick={() => navigate(`/usuarios/update/${id}`)} />
+      )}
+      <FieldButton type='button' name='Volver' onClick={() => navigate(-1)} />
+      {isLoading && <Loader />}
     </div>
   )
 }

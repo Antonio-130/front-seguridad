@@ -78,9 +78,17 @@ export const createAndUpdateGrupoValidation = Yup.object({
     .required('Requerido')
     .trim()
     .matches(/^[a-zA-Z]+$/, 'El nombre solo puede contener letras')
-    .max(30, "Nombre muy largo"),
+    .max(20, "Nombre muy largo"),
   descripcion: Yup.string()
     .required('Requerido')
     .trim()
-    .max(100, "Descripcion muy larga"),
+    .max(30, "Descripcion muy larga"),
+})
+
+export const createAndUpdateEstadoUsuarioValidation = Yup.object({
+  nombre: Yup.string()
+    .required('Requerido')
+    .trim()
+    .matches(/^[a-zA-Z]+$/, 'El nombre solo puede contener letras')
+    .max(15, "Nombre muy largo"),
 })

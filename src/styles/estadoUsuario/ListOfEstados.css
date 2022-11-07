@@ -1,6 +1,6 @@
 @import url('styles/Variables.css');
 
-.grupos-container {
+.estadosUsuario-container {
   width: fit-content;
   margin: 50px auto;
   display: flex;
@@ -45,13 +45,13 @@
   color: var(--c-white)
 }
 
-.add-grupo{
+.add-estado{
   position: absolute;
   top: -16px;
   transform: translateX(-50%);
 }
 
-.add-grupo a{
+.add-estado a{
   color: var(--c-white);
   text-decoration: underline;
 }

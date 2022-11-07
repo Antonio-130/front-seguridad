@@ -6,6 +6,8 @@ import { getUsuarios } from 'services/usuario'
 import { Link } from 'react-router-dom'
 import { useQuery } from 'react-query'
 
+import { AddIcon } from 'assets/ui'
+
 import UsuarioContext from 'context/UsuarioContext'
 
 export default function ListOfUsuarios() {
@@ -18,17 +20,25 @@ export default function ListOfUsuarios() {
 
   return (
     <div className='usuarios-container'>
-      {hasAccion("create_usuario") && (
+      {/* {hasAccion("create_usuario") && (
         <div className='add-usuario'>
-          <Link to="/usuarios/add">Añadir</Link>
+          <Link to="/usuarios/add">
+            <AddIcon name="usuario" />
+          </Link>
         </div>
-      )}
+      )} */}
       <header className='header-list'>
         <p>Nombre</p>
         <p>Apellido</p>
         <p>Email</p>
         <p>Estado</p>
-        <p></p>
+        <p>
+        {hasAccion("create_usuario") && (
+          <Link to="/usuarios/add" className='add-usuario'>
+            <AddIcon name="usuario" />
+          </Link>
+        )}
+        </p>
       </header>
       {usuarios?.data?.length > 0 ? usuarios?.data?.map(usuario => {
         return (

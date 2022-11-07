@@ -1,6 +1,6 @@
 @import url('styles/Variables.css');
 
-.grupo-container {
+.estadoUsuario-container {
   color: var(--c-white);
   width: max-content;
   height: 30px;
@@ -16,13 +16,13 @@
   -o-border-radius: 10px;
 }
 
-.grupo-container p {
+.estadoUsuario-container p {
   border-right: 2px solid var(--c-ash-gray);
   text-align: center;
   padding: 5px 50px;
 }
 
-.grupo-container button {
+.estadoUsuario-container button {
   border: none;
   background: none;
   color: var(--c-white);
@@ -31,36 +31,7 @@
   padding: 5px 10px;
 }
 
-.grupo-container button a {
+.estadoUsuario-container button a {
   color: var(--c-white);
   text-decoration: underline;
-}
-
-.acciones-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-}
-
-.tag {
-  color: var(--c-white);
-  border: 1px solid var(--c-ash-gray);
-  border-radius: 10px;
-  margin: 7px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 0 20px;
-}
-
-.tag p {
-  margin: 0;
-  padding: 8px 0;
-}
-
-.tag-title {
-  font-weight: 500;
-  font-style: italic;
 }

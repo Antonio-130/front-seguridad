@@ -156,6 +156,7 @@ export default function UpdateUsuario() {
             />
 
             <FieldButton type='submit' name='Actualizar Usuario' />
+            <FieldButton type='button' name='Cancelar' onClick={() => navigate(-1)} />
           </div>
           {isLoading && <Loader />}
         </Form>
