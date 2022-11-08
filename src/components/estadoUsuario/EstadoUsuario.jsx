@@ -4,7 +4,9 @@ import UsuarioContext from 'context/UsuarioContext'
 import 'styles/estadoUsuario/EstadoUsuario.css'
 import { UpdateIcon, DeleteIcon } from 'assets/ui'
 
-export default function EstadoUsuario({id, nombre}) {
+export default function EstadoUsuario({data}) {
+
+  const {id, nombre } = data
 
   const {hasAccion} = useContext(UsuarioContext)
 

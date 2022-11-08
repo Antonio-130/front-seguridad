@@ -1,5 +1,4 @@
 export const useAccionesSections = (acciones) => {
-
   const listOfTags = acciones.reduce((prev, current) => {
     if (prev.length === 0) {
       return [current.tag]

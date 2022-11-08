@@ -6,7 +6,9 @@ import { ArrowDownIcon, ArrowUpIcon } from 'assets/ui'
 import { UpdateIcon, DeleteIcon } from 'assets/ui'
 import { useAccionesSections } from 'hooks/useAccionesSections'
 
-export default function Grupo({id, nombre, descripcion, acciones}) {
+export default function Grupo({data}) {
+
+  const {id, nombre, descripcion, acciones} = data
 
   const {hasAccion} = useContext(UsuarioContext)
 

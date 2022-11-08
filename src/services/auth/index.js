@@ -1,3 +1,5 @@
+import {isUnAuthorized} from '../response'
+
 export const login = async (values) => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
     method: 'POST',
@@ -13,12 +15,15 @@ export const login = async (values) => {
 }
 
 export const autoLogin = async (token) => {
-  const response = await fetch(`${process.env.REACT_APP_API_URL}/autoLogin?token=${token}`, {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/autoLogin`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-    }
+    },
+    body: JSON.stringify({token})
   })
+
+  isUnAuthorized(response)
 
   const data = await response.json()
 
@@ -26,11 +31,12 @@ export const autoLogin = async (token) => {
 }
 
 export const verifyToken = async (token) => {
-  const response = await fetch(`${process.env.REACT_APP_API_URL}/verificarToken?token=${token}`, {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/verificarToken`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-    }
+    },
+    body: JSON.stringify({token})
   })
   return response
 }

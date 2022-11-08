@@ -7,13 +7,10 @@ import UsuarioRouter from "routes/UsuarioRouter"
 import GrupoRouter from "routes/GrupoRouter"
 import EstadoUsuarioRouter from "routes/EstadoUsuarioRouter"
 
-import {useTokenValidation} from "hooks/useTokenValidation"
-
 import UsuarioContext from "context/UsuarioContext"
 
 export default function App() {
-  const {isLogged, hasAccesoByTag, handleAutoLogin, handleLogout} = useContext(UsuarioContext)
-  useTokenValidation(handleAutoLogin, handleLogout)
+  const {isLogged, hasAccesoByTag} = useContext(UsuarioContext)
 
   const permission = (tag) => {
     return isLogged && hasAccesoByTag(tag)

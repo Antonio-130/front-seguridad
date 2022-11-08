@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import UsuarioContext from 'context/UsuarioContext'
 import { Link } from 'react-router-dom'
 import 'styles/grupo/ListOfGrupos.css'
@@ -7,14 +7,20 @@ import Loader from 'components/Loader'
 import { getGrupos } from 'services/grupo'
 import { useQuery } from 'react-query'
 import { AddIcon } from 'assets/ui'
+import ListOfValues from 'components/ListOfValues'
 
 export default function ListOfGrupos() {
   const {hasAccion} = useContext(UsuarioContext)
 
-  const { isLoading, data: grupos} = useQuery(['grupos'], getGrupos, {
+  const [grupos, setGrupos] = useState([])
+
+  const { isLoading } = useQuery(['grupos'], getGrupos, {
     refetchOnWindowFocus: false,
     onError: (error) => {
       console.log(error)
+    },
+    onSuccess: (data) => {
+      setGrupos(data.data)
     }
   })
 
@@ -32,17 +38,7 @@ export default function ListOfGrupos() {
         )}
         </p>
       </header>
-      {grupos?.data?.length > 0 ? grupos?.data?.map(grupo => {
-        return (
-          <Grupo
-            key={grupo.id}
-            id={grupo.id}
-            nombre={grupo.nombre}
-            descripcion={grupo.descripcion}
-            acciones={grupo.acciones}
-          />
-        )
-      }): <p className='msg-info'>No hay grupos registrados</p>}
+      <ListOfValues name="grupos" values={grupos} Component={Grupo} />
       {isLoading && <Loader />}
     </div>
   )

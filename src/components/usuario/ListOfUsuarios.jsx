@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import Usuario from './Usuario'
 import 'styles/usuario/ListOfUsuarios.css'
 import Loader from 'components/Loader'
@@ -8,25 +8,24 @@ import { useQuery } from 'react-query'
 
 import { AddIcon } from 'assets/ui'
 
+import ListOfValues from 'components/ListOfValues'
+
 import UsuarioContext from 'context/UsuarioContext'
 
 export default function ListOfUsuarios() {
 
   const {hasAccion} = useContext(UsuarioContext)
 
-  const { isLoading, data: usuarios} = useQuery(['usuarios'], getUsuarios, {
-    refetchOnWindowFocus: false
+  const [usuarios, setUsuarios] = useState([])
+
+  const { isLoading } = useQuery(['usuarios'], getUsuarios, {
+    onSuccess: (data) => {
+      setUsuarios(data.data)
+    }, refetchOnWindowFocus: false
   })
 
   return (
     <div className='usuarios-container'>
-      {/* {hasAccion("create_usuario") && (
-        <div className='add-usuario'>
-          <Link to="/usuarios/add">
-            <AddIcon name="usuario" />
-          </Link>
-        </div>
-      )} */}
       <header className='header-list'>
         <p>Nombre</p>
         <p>Apellido</p>
@@ -40,17 +39,7 @@ export default function ListOfUsuarios() {
         )}
         </p>
       </header>
-      {usuarios?.data?.length > 0 ? usuarios?.data?.map(usuario => {
-        return (
-          <Usuario key={usuario.id}
-            id={usuario.id}
-            nombre={usuario.nombre}
-            apellido={usuario.apellido}
-            email={usuario.email}
-            estado={usuario.estado.nombre}
-          />
-        )
-      }): <p className='msg-info'>No hay usuarios registrados</p>}
+      <ListOfValues name="usuarios" values={usuarios} Component={Usuario} />
       {isLoading && <Loader />}
     </div>
   )

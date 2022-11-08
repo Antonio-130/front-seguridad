@@ -5,7 +5,9 @@ import { deleteUsuario } from "services/usuario"
 
 import UsuarioContext from "context/UsuarioContext"
 import { UpdateIcon, LookupIcon, DeleteIcon } from "assets/ui"
-export default function Usuario({ id, nombre, apellido, email, estado }) {
+export default function Usuario({data}) {
+
+  const {id, nombre, apellido, email, estado} = data
 
   const {hasAccion} = useContext(UsuarioContext)
 
@@ -25,7 +27,7 @@ export default function Usuario({ id, nombre, apellido, email, estado }) {
         <p>{nombre}</p>
         <p>{apellido}</p>
         <p>{email}</p>
-        <p>{estado}</p>
+        <p>{estado.nombre}</p>
         <div>
           {hasAccion("get_usuario") &&
             <button>

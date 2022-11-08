@@ -43,7 +43,11 @@ export default function Login() {
         localStorage.setItem('acciones', JSON.stringify(res.data[2].acciones))
         setError(false)
         setLoading(false)
-        navigate('/')
+        navigate('/', {
+          state: {
+            prevUrl: '/auth/login',
+          }
+        })
       }
       else {
         setLoading(false)

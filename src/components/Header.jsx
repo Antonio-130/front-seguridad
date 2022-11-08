@@ -1,12 +1,16 @@
 import React, {useContext} from "react"
 import 'styles/Header.css'
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import UsuarioContext from "context/UsuarioContext"
 import logo from "assets/security-logo.svg"
+import { useTokenValidation } from "hooks/useTokenValidation"
 
 export default function Header() {
   const {isLogged, handleLogout, hasAccesoByTag} = useContext(UsuarioContext)
   const navigate = useNavigate()
+  const location = useLocation()
+  useTokenValidation(location.state?.prevUrl === '/auth/login' ? true : false)
+
   return (
     <>
       <div className="empty-space"></div>
