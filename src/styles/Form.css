@@ -87,8 +87,7 @@ option:checked {
 }
 
 .form-btn{
-  width: 60%;
-  padding: 10px;
+  padding: 10px 18px;
   border: 2px solid var(--c-ash-gray);
   border-radius: 5px;
   box-sizing: border-box;

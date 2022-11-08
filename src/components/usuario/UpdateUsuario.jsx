@@ -1,20 +1,23 @@
 import React, {useState } from 'react'
 import { Formik, Form } from 'formik';
-import { updateUsuarioValidation } from 'schemas/validation';
-import { useNavigate, useParams } from 'react-router-dom';
+import { updateUsuarioValidation } from 'schemas/validation'
+import { useNavigate, useParams } from 'react-router-dom'
 import 'styles/Form.css';
-import Loader from 'components/Loader';
-import { useQuery } from 'react-query';
+import Loader from 'components/Loader'
+import { useQuery, useMutation } from 'react-query'
 
-import FieldText from 'components/inputsForm/FieldText';
-import FieldButton from 'components/inputsForm/FieldButton';
-import FieldSelect from 'components/inputsForm/FieldSelect';
-import CheckboxGroup from 'components/inputsForm/CheckboxGroup';
-import ButtonSlicer from 'components/inputsForm/ButtonSlicer';
+import FieldText from 'components/inputsForm/FieldText'
+import FieldButton from 'components/inputsForm/FieldButton'
+import FieldSelect from 'components/inputsForm/FieldSelect'
+import CheckboxGroup from 'components/inputsForm/CheckboxGroup'
+import ButtonSlicer from 'components/inputsForm/ButtonSlicer'
 
-import { getUsuarioById, updateUsuario } from 'services/usuario';
-import { getEstadosUsuario } from 'services/estadoUsuario';
-import { getGrupos } from 'services/grupo';
+import { getUsuarioById, updateUsuario } from 'services/usuario'
+import { getEstadosUsuario } from 'services/estadoUsuario'
+import { getGrupos } from 'services/grupo'
+
+import Modal from 'components/Modal';
+import { MessaggeErrorAndSuccess } from 'components/MessageInfo';
 
 export default function UpdateUsuario() {
 
@@ -45,6 +48,8 @@ export default function UpdateUsuario() {
     }
   }
 
+  const [modalActive, setModalActive] = useState(false);
+
   const { isLoading } = useQuery(['usuarioUpdateData', id], () => handleGetData(id), {
     onSuccess: (data) => {
       const { usuario, estados, grupos } = data;
@@ -67,20 +72,19 @@ export default function UpdateUsuario() {
     }, refetchOnWindowFocus: false }
   );
 
-  const onSubmit = values => {
-    delete values.confirmEmail;
-    values.id = id;
+  const usuarioUpdateMutation = useMutation(updateUsuario);
 
-    updateUsuario(values).then(response => {
-      console.log(response);
-      setTimeout(() => {
-        navigate(-1);
-      }
-      , 1000);
+  const onSubmit = values => {
+    const newValues = {
+      id,
+      nombre: values.nombre,
+      apellido: values.apellido,
+      username: values.username,
+      email: values.email,
+      estado: values.estado,
+      grupos: values.grupos
     }
-    ).catch(error => {
-      console.log(error);
-    });
+    usuarioUpdateMutation.mutate(newValues)
   }
 
   return (
@@ -155,10 +159,20 @@ export default function UpdateUsuario() {
               values={grupos}
             />
 
-            <FieldButton type='submit' name='Actualizar Usuario' />
+            <FieldButton type='submit' name='Actualizar Usuario' onClick={() => setModalActive(true)} />
             <FieldButton type='button' name='Cancelar' onClick={() => navigate(-1)} />
           </div>
-          {isLoading && <Loader />}
+          {(isLoading || usuarioUpdateMutation.isLoading) && <Loader />}
+          <Modal active={modalActive}>
+            <MessaggeErrorAndSuccess
+              isSuccess={usuarioUpdateMutation.isSuccess}
+              messageSuccess="Usuario actualizado!"
+              onClickSuccess={() => {setModalActive(false); navigate(-1)}}
+              isError={usuarioUpdateMutation.isError}
+              messageError="Error al actualizar el usuario"
+              onClickError={() => setModalActive(false)}
+            />
+          </Modal>
         </Form>
       )}
     </Formik>
