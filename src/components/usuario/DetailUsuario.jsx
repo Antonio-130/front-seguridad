@@ -9,7 +9,11 @@ import { getUsuarioById } from 'services/usuario'
 
 import { useQuery } from 'react-query'
 
+import { useChangeTitle } from 'hooks/useChangeTitle'
+
 export default function DetailUsuario() {
+
+  useChangeTitle('Detalle de Usuario')
 
   const { hasAccion } = useContext(UsuarioContext)
 

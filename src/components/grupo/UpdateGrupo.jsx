@@ -15,7 +15,11 @@ import { useQuery } from 'react-query'
 
 import {useAccionesSections} from 'hooks/useAccionesSections'
 
-export default function CreateGrupo() {
+import { useChangeTitle } from 'hooks/useChangeTitle'
+
+export default function UpdateGrupo() {
+
+  useChangeTitle('Actualizar Grupo')
 
   const { id } = useParams()
 

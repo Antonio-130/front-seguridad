@@ -12,6 +12,8 @@ export default function UsuarioRouter() {
       <Route path="/:id" element={<DetailUsuario />} />
       <Route path="/add/" element={<CreateUsuario />} />
       <Route path="/update/:id" element={<UpdateUsuario />} />
+      <Route path="/profile" element={<UpdateUsuario />} />
+      <Route path="/changeClave" element={<UpdateUsuario />} />
     </Routes>
   )
 }

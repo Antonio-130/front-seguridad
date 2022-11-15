@@ -6,6 +6,7 @@ import Login from "components/auth/Login"
 import UsuarioRouter from "routes/UsuarioRouter"
 import GrupoRouter from "routes/GrupoRouter"
 import EstadoUsuarioRouter from "routes/EstadoUsuarioRouter"
+import ChangeClave from "components/ChangeClave"
 
 import UsuarioContext from "context/UsuarioContext"
 
@@ -25,6 +26,7 @@ export default function App() {
         {permission('grupos') && <Route path="/grupos/*" element={<GrupoRouter />} />}
         {permission('estadosUsuario') && <Route path="/estadosUsuario/*" element={<EstadoUsuarioRouter />} />}
         {!(isLogged) && <Route path="/auth/login" element={<Login />} />}
+        {isLogged && <Route path="/changeClave" element={<ChangeClave />} />}
         <Route path="*" element={<h1 style={{'color': 'white', 'textAlign': 'center'}}>404: Not Found</h1>} />
       </Routes>
     </Router>

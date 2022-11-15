@@ -16,8 +16,11 @@ import { useNavigate } from 'react-router-dom'
 
 import { useQuery } from 'react-query'
 
+import { useChangeTitle } from 'hooks/useChangeTitle'
 
 export default function CreateUsuario() {
+
+  useChangeTitle('Crear Usuario')
 
   const navigate = useNavigate()
 

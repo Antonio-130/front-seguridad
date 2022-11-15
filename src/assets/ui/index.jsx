@@ -6,6 +6,7 @@ import lookupIcon from './lookup.svg'
 import updateIcon from './update.svg'
 import arrowDownIcon from './arrow-down.svg'
 import arrowUpIcon from './arrow-up.svg'
+import infoIcon from './info.svg'
 
 export const AddIcon = ({name}) => {
   return (
@@ -40,6 +41,12 @@ export const ArrowDownIcon = () => {
 export const ArrowUpIcon = () => {
   return (
     <img src={arrowUpIcon} alt="arrow up icon" title="Ocultar" className='icon arrow'/>
+  )
+}
+
+export const InfoIcon = () => {
+  return (
+    <img src={infoIcon} alt="info icon" title="Información" className='icon info'/>
   )
 }
 

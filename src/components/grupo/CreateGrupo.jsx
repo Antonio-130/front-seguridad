@@ -15,7 +15,11 @@ import { useQuery } from 'react-query'
 
 import {useAccionesSections} from 'hooks/useAccionesSections'
 
+import { useChangeTitle } from 'hooks/useChangeTitle'
+
 export default function CreateGrupo() {
+
+  useChangeTitle('Crear Grupo')
 
   const navigate = useNavigate()
 

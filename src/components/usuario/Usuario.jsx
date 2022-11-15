@@ -5,6 +5,7 @@ import { deleteUsuario } from "services/usuario"
 
 import UsuarioContext from "context/UsuarioContext"
 import { UpdateIcon, LookupIcon, DeleteIcon } from "assets/ui"
+
 export default function Usuario({data}) {
 
   const {id, nombre, apellido, email, estado} = data

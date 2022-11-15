@@ -92,3 +92,19 @@ export const createAndUpdateEstadoUsuarioValidation = Yup.object({
     .matches(/^[a-zA-Z]+$/, 'El nombre solo puede contener letras')
     .max(15, "Nombre muy largo"),
 })
+
+export const changeClaveValidation = Yup.object({
+  clave: Yup.string()
+    .required('Requerido')
+    .min(6, 'La clave debe tener más de 6 caracteres')
+    .trim(),
+  newClave: Yup.string()
+    .required('Requerido')
+    .min(6, 'La clave debe tener más de 6 caracteres')
+    .trim(),
+  confirmNewClave: Yup.string()
+    .required('Requerido')
+    .min(6, 'La clave debe tener más de 6 caracteres')
+    .trim()
+    .oneOf([Yup.ref('newClave'), null], 'Las claves no coinciden')
+})

@@ -19,7 +19,11 @@ import { getGrupos } from 'services/grupo'
 import Modal from 'components/Modal';
 import { MessaggeErrorAndSuccess } from 'components/MessageInfo';
 
+import { useChangeTitle } from 'hooks/useChangeTitle'
+
 export default function UpdateUsuario() {
+
+  useChangeTitle('Actualizar Usuario')
 
   const { id } = useParams();
   const navigate = useNavigate();

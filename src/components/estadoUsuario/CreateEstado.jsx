@@ -8,7 +8,11 @@ import FieldButton from 'components/inputsForm/FieldButton'
 import { createEstadoUsuario } from 'services/estadoUsuario'
 import { useNavigate } from 'react-router-dom'
 
+import { useChangeTitle } from 'hooks/useChangeTitle'
+
 export default function CreateEstado() {
+
+  useChangeTitle('Crear Estado')
 
   const navigate = useNavigate()
 

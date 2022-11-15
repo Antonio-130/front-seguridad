@@ -10,7 +10,12 @@ import { AddIcon } from 'assets/ui'
 
 import ListOfValues from 'components/ListOfValues'
 
+import { useChangeTitle } from 'hooks/useChangeTitle'
+
 export default function ListOfestadosUsuario() {
+
+  useChangeTitle('Estados de usuario')
+
   const {hasAccion} = useContext(UsuarioContext)
 
   const [estadosUsuario, setEstadosUsuario] = useState([])

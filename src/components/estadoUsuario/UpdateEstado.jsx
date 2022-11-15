@@ -10,7 +10,11 @@ import { updateEstadoUsuario, getEstadoUsuarioById } from 'services/estadoUsuari
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery } from 'react-query'
 
+import { useChangeTitle } from 'hooks/useChangeTitle'
+
 export default function UpdateEstado() {
+
+  useChangeTitle('Actualizar Estado')
 
   const { id } = useParams()
   const navigate = useNavigate()

@@ -40,3 +40,17 @@ export const verifyToken = async (token) => {
   })
   return response
 }
+
+export const changeClave = async (values) => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/changeClave`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(values)
+  })
+
+  const data = await response.json()
+
+  return data
+}

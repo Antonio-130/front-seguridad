@@ -64,3 +64,33 @@
   font-weight: 500;
   font-style: italic;
 }
+
+.tooltip {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tooltip-text {
+  width: max-content;
+  border: 1px solid var(--c-ash-gray);
+  color: black;
+  background-color: var(--c-white);
+  position: absolute;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  top: 0;
+  visibility: hidden;
+}
+
+.tooltip-text p {
+  padding: 5px;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+}

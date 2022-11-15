@@ -1,7 +1,6 @@
 import React from 'react'
 import 'styles/MessageInfo.css'
 import FieldButton from './inputsForm/FieldButton'
-import Modal from './Modal'
 
 export const MessageInfo = ({ message, type, onClick}) => {
   return (

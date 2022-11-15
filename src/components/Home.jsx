@@ -1,9 +1,12 @@
 import React, {useContext} from 'react'
 import UsuarioContext from 'context/UsuarioContext'
+import { useChangeTitle } from 'hooks/useChangeTitle'
 
 export default function Home() {
   const {usuario, isLogged} = useContext(UsuarioContext)
   const {nombre, apellido} = usuario
+
+  useChangeTitle('Inicio')
 
   return (
     <div style={styles.container}>

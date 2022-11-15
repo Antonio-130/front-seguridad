@@ -12,7 +12,11 @@ import ListOfValues from 'components/ListOfValues'
 
 import UsuarioContext from 'context/UsuarioContext'
 
+import { useChangeTitle } from 'hooks/useChangeTitle'
+
 export default function ListOfUsuarios() {
+
+  useChangeTitle('Usuarios')
 
   const {hasAccion} = useContext(UsuarioContext)
 

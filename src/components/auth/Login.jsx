@@ -12,7 +12,11 @@ import UsuarioContext from 'context/UsuarioContext'
 
 import { login } from 'services/auth'
 
+import { useChangeTitle } from 'hooks/useChangeTitle'
+
 export default function Login() {
+
+  useChangeTitle('Iniciar sesión')
 
   const {types, dispatch} = useContext(UsuarioContext)
 

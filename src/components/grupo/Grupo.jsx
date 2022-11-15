@@ -5,6 +5,7 @@ import 'styles/grupo/Grupo.css'
 import { ArrowDownIcon, ArrowUpIcon } from 'assets/ui'
 import { UpdateIcon, DeleteIcon } from 'assets/ui'
 import { useAccionesSections } from 'hooks/useAccionesSections'
+import { InfoIcon } from 'assets/ui'
 
 export default function Grupo({data}) {
 
@@ -56,13 +57,28 @@ const ListOfAcciones = ({sections}) => {
           <p className='tag-title'>{section.nombre[0].toUpperCase() + section.nombre.slice(1)}</p>
           {section.values.map(accion => {
             return (
-              <p key={accion.id_accion}>{accion.nombre}</p>
+              <TextWithTooltip
+                key={accion.id_accion}
+                text={accion.nombre}
+                description={accion.descripcion}
+              />
             )
           })}
         </div>
       )
     }
   ))
+}
+
+const TextWithTooltip = ({text, description}) => {
+  return (
+    <div className='tooltip'>
+      <p>{text} <InfoIcon/> </p>
+      <div className='tooltip-text'>
+        <p>{description}</p>
+      </div>
+    </div>
+  )
 }
 
 const styles = {

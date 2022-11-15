@@ -20,7 +20,7 @@
     z-index: 10;
 }
 
-.header-container div{
+.header-container > div {
   margin: 0 20px;
 }
 
