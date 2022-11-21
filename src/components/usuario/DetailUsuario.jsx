@@ -1,15 +1,12 @@
-import React, {useState, useContext} from 'react'
-import "styles/usuario/DetailUsuario.css"
+import { useContext } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { useQuery } from 'react-query'
+import { useChangeTitle } from 'hooks/useChangeTitle'
+import { getUsuarioById } from 'services/usuario'
+import FieldButton from 'components/inputsForm/FieldButton'
 import Loader from 'components/Loader'
 import UsuarioContext from 'context/UsuarioContext'
-
-import FieldButton from 'components/inputsForm/FieldButton'
-import { useParams, useNavigate } from 'react-router-dom'
-import { getUsuarioById } from 'services/usuario'
-
-import { useQuery } from 'react-query'
-
-import { useChangeTitle } from 'hooks/useChangeTitle'
+import "styles/usuario/DetailUsuario.css"
 
 export default function DetailUsuario() {
 
@@ -17,23 +14,12 @@ export default function DetailUsuario() {
 
   const { hasAccion } = useContext(UsuarioContext)
 
-  const { id } = useParams()
+  const { id: idUsuario } = useParams()
   const navigate = useNavigate()
 
-  const [usuario, setUsuario] = useState({})
-
-  const { isLoading } = useQuery(['usuario', id], () => getUsuarioById(id), {
-    onSuccess: (data) => {
-      const usuario = data
-      setUsuario({
-        nombre: usuario.nombre,
-        apellido: usuario.apellido,
-        username: usuario.username,
-        email: usuario.email,
-        estado: usuario.estado.nombre,
-        grupos: usuario.grupos.map(grupo => grupo.nombre).join(', ')
-      })
-    }, refetchOnWindowFocus: false
+  const { isLoading, data: usuario } = useQuery(['usuario', idUsuario], () => getUsuarioById(idUsuario), {
+    refetchOnWindowFocus: false,
+    initialData: {}
   })
 
   return (
@@ -42,10 +28,11 @@ export default function DetailUsuario() {
       <p>Nombre: {usuario.nombre}</p>
       <p>Apellido: {usuario.apellido}</p>
       <p>Email: {usuario.email}</p>
-      <p>Estado: {usuario.estado}</p>
-      <p>Grupos: {usuario.grupos}</p>
+      <p>Fecha de creacion: {new Date(usuario.fecha_creacion).toLocaleDateString()}</p>
+      <p>Estado: {usuario.estado?.nombre}</p>
+      <p>Grupos: {usuario.grupos?.map(grupo => grupo.nombre).join(', ')}</p>
       {hasAccion("update_usuario") && (
-        <FieldButton type='button' name='Editar' onClick={() => navigate(`/usuarios/update/${id}`)} />
+        <FieldButton type='button' name='Editar' onClick={() => navigate(`/usuarios/update/${idUsuario}`)} />
       )}
       <FieldButton type='button' name='Volver' onClick={() => navigate(-1)} />
       {isLoading && <Loader />}

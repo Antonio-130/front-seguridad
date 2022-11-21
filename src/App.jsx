@@ -1,4 +1,4 @@
-import React, {useContext} from "react"
+import { useContext } from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Header from "components/Header"
 import Home from "components/Home"
@@ -7,15 +7,12 @@ import UsuarioRouter from "routes/UsuarioRouter"
 import GrupoRouter from "routes/GrupoRouter"
 import EstadoUsuarioRouter from "routes/EstadoUsuarioRouter"
 import ChangeClave from "components/ChangeClave"
-
 import UsuarioContext from "context/UsuarioContext"
 
 export default function App() {
-  const {isLogged, hasAccesoByTag} = useContext(UsuarioContext)
+  const { isLogged, hasAccesoByTag } = useContext(UsuarioContext)
 
-  const permission = (tag) => {
-    return isLogged && hasAccesoByTag(tag)
-  }
+  const permission = tag => isLogged && hasAccesoByTag(tag)
 
   return (
     <Router>

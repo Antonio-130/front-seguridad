@@ -1,7 +1,6 @@
-import React from 'react'
 import { ErrorMessage } from 'formik'
 
-export default function Message({errors, touched, name}) {
+export default function Message({ errors, touched, name }) {
   return (
     <p className='error-msg'>
       {errors && touched

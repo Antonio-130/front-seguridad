@@ -1,25 +1,23 @@
-import React, {useContext, useState} from 'react'
+import { useContext, useState } from 'react'
+import { useAccionesSections } from 'hooks/useAccionesSections'
 import { Link } from 'react-router-dom'
-import UsuarioContext from 'context/UsuarioContext'
-import 'styles/grupo/Grupo.css'
 import { ArrowDownIcon, ArrowUpIcon } from 'assets/ui'
 import { UpdateIcon, DeleteIcon } from 'assets/ui'
-import { useAccionesSections } from 'hooks/useAccionesSections'
 import { InfoIcon } from 'assets/ui'
+import UsuarioContext from 'context/UsuarioContext'
+import 'styles/grupo/Grupo.css'
 
-export default function Grupo({data}) {
+export default function Grupo({ data }) {
 
-  const {id, nombre, descripcion, acciones} = data
+  const { id, nombre, descripcion, acciones } = data
 
-  const {hasAccion} = useContext(UsuarioContext)
+  const { hasAccion } = useContext(UsuarioContext)
 
   const [showAcciones, setShowAcciones] = useState(false)
 
   const accionesSections = useAccionesSections(acciones)
 
-  const handleToggleShowAcciones = () => {
-    setShowAcciones(!showAcciones)
-  }
+  const handleToggleShowAcciones = () => setShowAcciones(!showAcciones)
 
   return (
     <>

@@ -1,51 +1,37 @@
-import React, {useState} from 'react'
 import { Formik, Form } from 'formik'
+import { useParams, useNavigate } from 'react-router-dom'
+import { useQuery, useMutation } from 'react-query'
+import { useChangeTitle } from 'hooks/useChangeTitle'
+import { useMessageModal } from 'hooks/useMessageModal'
+import { updateEstadoUsuario, getEstadoUsuarioById } from 'services/estadoUsuario'
 import { createAndUpdateEstadoUsuarioValidation } from 'schemas/validation'
-import 'styles/Form.css'
 import Loader from 'components/Loader'
-
+import Modal from 'components/Modal'
+import MessageInfo from 'components/MessageInfo'
 import FieldText from 'components/inputsForm/FieldText'
 import FieldButton from 'components/inputsForm/FieldButton'
-import { updateEstadoUsuario, getEstadoUsuarioById } from 'services/estadoUsuario'
-import { useParams, useNavigate } from 'react-router-dom'
-import { useQuery } from 'react-query'
-
-import { useChangeTitle } from 'hooks/useChangeTitle'
+import 'styles/Form.css'
 
 export default function UpdateEstado() {
 
   useChangeTitle('Actualizar Estado')
 
-  const { id } = useParams()
+  const { id: idUsuario } = useParams()
   const navigate = useNavigate()
 
-  const [initialValues, setInitialValues] = useState({
-    nombre: '',
+  const { error, modalActive, setClearMsg, setSuccesMsg, setErrorMsg } = useMessageModal()
+
+  const { isLoading, data: { id, ...initialValues } } = useQuery(['estadoUsuario', idUsuario], () => getEstadoUsuarioById(idUsuario), {
+    refetchOnWindowFocus: false,
+    initialData: {nombre: ''},
   })
 
-  const { isLoading } = useQuery(['estadoUsuario', id], () => getEstadoUsuarioById(id), {
-    onSuccess: (data) => {
-      const { nombre } = data
-      setInitialValues({
-        nombre
-      })
-    }, refetchOnWindowFocus: false
+  const updateEstadoUsuarioMutation = useMutation(updateEstadoUsuario, {
+    onSuccess: setSuccesMsg,
+    onError: setErrorMsg
   })
 
-  const onSubmit = values => {
-    alert(JSON.stringify(values))
-
-    /* updateEstadoUsuario(values).then(response => {
-      console.log(response)
-      setTimeout(() => {
-        navigate(-1)
-      }
-      , 1000)
-    }
-    ).catch(error => {
-      console.log(error)
-    }) */
-  }
+  const onSubmit = values => updateEstadoUsuarioMutation.mutate(values)
 
   return (
     <Formik
@@ -70,6 +56,22 @@ export default function UpdateEstado() {
             <FieldButton type='button' name='Cancelar' onClick={() => navigate(-1)} />
           </div>
           {isLoading && <Loader />}
+          <Modal active={modalActive}>
+            {!error && (
+              <MessageInfo
+                message='Estado actualizado correctamente'
+                type='success'
+                onClick={() => {setClearMsg(); navigate(-1)}}
+              />
+            )}
+            {error && (
+              <MessageInfo
+                message='Error al actualizar el estado'
+                type='error'
+                onClick={setClearMsg}
+              />
+            )}
+          </Modal>
         </Form>
       )}
     </Formik>

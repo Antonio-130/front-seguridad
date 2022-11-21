@@ -1,8 +1,7 @@
-import React from 'react'
+import { Routes, Route } from 'react-router-dom'
 import ListOfEstados from 'components/estadoUsuario/ListOfEstados'
 import UpdateEstado from 'components/estadoUsuario/UpdateEstado'
 import CreateEstado from 'components/estadoUsuario/CreateEstado'
-import {Routes, Route } from 'react-router-dom'
 
 export default function EstadoUsuarioRouter() {
   return (

@@ -1,8 +1,7 @@
-import React from 'react'
-import 'styles/Form.css'
 import FieldCheckbox from 'components/inputsForm/FieldCheckbox'
+import 'styles/Form.css'
 
-export default function CheckboxGroup({label, name, values, sections}) {
+export default function CheckboxGroup({ label, name, values, sections }) {
   return (
     <div className='checkboxGroup-container'>
       <div id="checkbox-group">

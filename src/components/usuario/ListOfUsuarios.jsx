@@ -1,31 +1,27 @@
-import React, { useContext, useState } from 'react'
-import Usuario from './Usuario'
-import 'styles/usuario/ListOfUsuarios.css'
-import Loader from 'components/Loader'
-import { getUsuarios } from 'services/usuario'
-import { Link } from 'react-router-dom'
+import { useContext } from 'react'
 import { useQuery } from 'react-query'
-
-import { AddIcon } from 'assets/ui'
-
-import ListOfValues from 'components/ListOfValues'
-
-import UsuarioContext from 'context/UsuarioContext'
-
 import { useChangeTitle } from 'hooks/useChangeTitle'
+import { Link } from 'react-router-dom'
+import { getUsuarios } from 'services/usuario'
+import { AddIcon } from 'assets/ui'
+import Usuario from './Usuario'
+import Loader from 'components/Loader'
+import UsuarioContext from 'context/UsuarioContext'
+import 'styles/usuario/ListOfUsuarios.css'
+
+import FilterAndPagination from 'components/FilterAndPagination'
 
 export default function ListOfUsuarios() {
 
   useChangeTitle('Usuarios')
 
-  const {hasAccion} = useContext(UsuarioContext)
+  const { id } = JSON.parse(localStorage.getItem('usuario'))
 
-  const [usuarios, setUsuarios] = useState([])
+  const { hasAccion } = useContext(UsuarioContext)
 
-  const { isLoading } = useQuery(['usuarios'], getUsuarios, {
-    onSuccess: (data) => {
-      setUsuarios(data)
-    }, refetchOnWindowFocus: false
+  const { isLoading, data: usuarios } = useQuery(['usuarios'], getUsuarios, {
+    refetchOnWindowFocus: false,
+    initialData: [],
   })
 
   return (
@@ -34,6 +30,7 @@ export default function ListOfUsuarios() {
         <p>Nombre</p>
         <p>Apellido</p>
         <p>Email</p>
+        <p>Fecha Creacion</p>
         <p>Estado</p>
         <p>
         {hasAccion("create_usuario") && (
@@ -43,8 +40,13 @@ export default function ListOfUsuarios() {
         )}
         </p>
       </header>
-      <ListOfValues name="usuarios" values={usuarios} Component={Usuario} />
       {isLoading && <Loader />}
+      <FilterAndPagination
+        values={usuarios.filter(user => user.id !== id)}
+        cant={10}
+        name='usuarios'
+        Component={Usuario}
+      />
     </div>
   )
 }

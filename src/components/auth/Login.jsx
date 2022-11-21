@@ -1,61 +1,46 @@
-import React, {useContext} from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useMutation } from 'react-query'
 import { Formik, Form } from 'formik'
 import { loginValidation } from 'schemas/validation'
-import 'styles/Form.css'
-import Loader from 'components/Loader'
-
-import FieldText from 'components/inputsForm/FieldText'
-import FieldButton from 'components/inputsForm/FieldButton'
-
-import UsuarioContext from 'context/UsuarioContext'
-import { useMutation } from 'react-query'
-
-import { login } from 'services/auth'
-
-import Modal from 'components/Modal'
-import MessageInfo from 'components/MessageInfo'
-
 import { useChangeTitle } from 'hooks/useChangeTitle'
 import { useMessageModal } from 'hooks/useMessageModal'
+import { login } from 'services/auth'
+import Loader from 'components/Loader'
+import FieldText from 'components/inputsForm/FieldText'
+import FieldButton from 'components/inputsForm/FieldButton'
+import Modal from 'components/Modal'
+import MessageInfo from 'components/MessageInfo'
+import UsuarioContext from 'context/UsuarioContext'
+import 'styles/Form.css'
 
 export default function Login() {
 
   useChangeTitle('Iniciar sesión')
 
-  const {handleLogin} = useContext(UsuarioContext)
+  const { handleLogin } = useContext(UsuarioContext)
 
-  const {error, modalActive, setErrorMsg, setClearMsg} = useMessageModal()
+  const { error, modalActive, setErrorMsg, setClearMsg } = useMessageModal()
 
   let navigate = useNavigate()
 
   const loginMutation = useMutation(login)
 
-  const initialValues = {
-    emailOrUsername: '',
-    clave: ''
-  }
+  const initialValues = { emailOrUsername: '', clave: '' }
 
   const onSubmit = values => {
     const new_data = transformData(values)
     loginMutation.mutate(new_data, {
       onSuccess: (data) => {
         handleLogin(data[0], data[1].token, data[2].acciones)
-        navigate('/', {
-          state: {
-            prevUrl: '/auth/login',
-          }
-        })
+        navigate('/', { state: { prevUrl: '/auth/login' } })
       },
       onError: setErrorMsg
     })
   }
 
-  const transformData = (data) => {
-    const {clave, emailOrUsername } = data
-    if (emailOrUsername.includes('@')) {
-      return { email: emailOrUsername, clave }
-    }
+  const transformData = ({ clave, emailOrUsername }) => {
+    if (emailOrUsername.includes('@')) return { email: emailOrUsername, clave }
     return { username: emailOrUsername, clave }
   }
 
@@ -76,7 +61,6 @@ export default function Login() {
               errors={errors.emailOrUsername}
               touched={touched.emailOrUsername}
             />
-
             <FieldText
               label='Clave'
               name='clave'
@@ -85,7 +69,6 @@ export default function Login() {
               errors={errors.clave}
               touched={touched.clave}
             />
-
             <FieldButton type='submit' name='Iniciar sesión' />
           </div>
           {loginMutation.isLoading && <Loader />}

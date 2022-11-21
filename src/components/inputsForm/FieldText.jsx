@@ -1,8 +1,7 @@
-import React from 'react'
 import { Field } from 'formik'
 import Message from './Message'
 
-export default function FieldText({label, name, type, placeholder, errors, touched}) {
+export default function FieldText({ label, name, type, placeholder, errors, touched }) {
 
   const handleTxtClass = (errors, touched) => {
     return (

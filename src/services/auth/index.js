@@ -1,4 +1,4 @@
-import {isError} from '../response'
+import { isError } from '../response'
 
 export const login = async (values) => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {

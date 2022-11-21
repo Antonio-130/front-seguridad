@@ -1,11 +1,7 @@
-import React from 'react'
 import Portal from 'Portal'
 import 'styles/Modal.css'
 
-export default function Modal(props) {
-
-  const { children, active } = props;
-
+export default function Modal({ children, active }) {
   return (
     <Portal>
       {active && (

@@ -7,6 +7,7 @@
   height: 200px;
   display: flex;
   border-radius: 10px;
+  border: 1px solid var(--c-info);
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -27,4 +28,11 @@
 
 .error {
   border: 1px solid var(--c-error)
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
 }

@@ -1,4 +1,4 @@
-export default function ListOfValues({name, values, Component}) {
+export default function ListOfValues({ name, values, Component }) {
   return (
     <>
       {values.length > 0 ? values.map(value => {

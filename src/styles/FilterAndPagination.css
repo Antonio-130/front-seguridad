@@ -1,0 +1,24 @@
+.filter-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.filter {
+  width: 60%;
+  margin-right: 10px;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: max-content;
+  padding: 20px 0;
+}
+
+.btn-prev, .btn-next {
+  margin: 0 10px;
+  cursor: pointer;
+}

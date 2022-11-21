@@ -1,29 +1,24 @@
-import React, { useContext, useState } from 'react'
-import UsuarioContext from 'context/UsuarioContext'
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import 'styles/estadoUsuario/ListOfEstados.css'
+import { useQuery } from 'react-query'
+import { useChangeTitle } from 'hooks/useChangeTitle'
+import { getEstadosUsuario } from 'services/estadoUsuario'
+import { AddIcon } from 'assets/ui'
+import ListOfValues from 'components/ListOfValues'
 import EstadoUsuario from './EstadoUsuario'
 import Loader from 'components/Loader'
-import { getEstadosUsuario } from 'services/estadoUsuario'
-import { useQuery } from 'react-query'
-import { AddIcon } from 'assets/ui'
-
-import ListOfValues from 'components/ListOfValues'
-
-import { useChangeTitle } from 'hooks/useChangeTitle'
+import UsuarioContext from 'context/UsuarioContext'
+import 'styles/estadoUsuario/ListOfEstados.css'
 
 export default function ListOfestadosUsuario() {
 
   useChangeTitle('Estados de usuario')
 
-  const {hasAccion} = useContext(UsuarioContext)
+  const { hasAccion } = useContext(UsuarioContext)
 
-  const [estadosUsuario, setEstadosUsuario] = useState([])
-
-  const { isLoading } = useQuery(['estadosUsuario'], getEstadosUsuario, {
-    onSuccess: (data) => {
-      setEstadosUsuario(data)
-    }, refetchOnWindowFocus: false
+  const { isLoading, data: estadosUsuario } = useQuery(['estadosUsuario'], getEstadosUsuario, {
+    refetchOnWindowFocus: false,
+    initialData: [],
   })
 
   return (
@@ -38,16 +33,6 @@ export default function ListOfestadosUsuario() {
           )}
         </p>
       </header>
-      {/* {estadosUsuario.length > 0 ? estadosUsuario.map(estadoUsuario => {
-        return (
-          <EstadoUsuario
-            key={estadoUsuario.id}
-            id={estadoUsuario.id}
-            nombre={estadoUsuario.nombre}
-          />
-        )
-      }): <p className='msg-info'>No hay estados de usuario registrados</p>} */}
-
       <ListOfValues name="estados de usuario" values={estadosUsuario} Component={EstadoUsuario} />
       {isLoading && <Loader />}
     </div>

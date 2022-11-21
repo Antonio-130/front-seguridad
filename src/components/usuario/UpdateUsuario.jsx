@@ -1,26 +1,22 @@
-import React, {useState } from 'react'
+import { useState } from 'react'
 import { Formik, Form } from 'formik';
-import { updateUsuarioValidation } from 'schemas/validation'
 import { useNavigate, useParams } from 'react-router-dom'
-import 'styles/Form.css';
-import Loader from 'components/Loader'
 import { useQuery, useMutation } from 'react-query'
-
+import { useChangeTitle } from 'hooks/useChangeTitle'
+import { useMessageModal } from 'hooks/useMessageModal';
+import { updateUsuarioValidation } from 'schemas/validation'
+import { getUsuarioById, updateUsuario } from 'services/usuario'
+import { getEstadosUsuario } from 'services/estadoUsuario'
+import { getGrupos } from 'services/grupo'
 import FieldText from 'components/inputsForm/FieldText'
 import FieldButton from 'components/inputsForm/FieldButton'
 import FieldSelect from 'components/inputsForm/FieldSelect'
 import CheckboxGroup from 'components/inputsForm/CheckboxGroup'
 import ButtonSlicer from 'components/inputsForm/ButtonSlicer'
-
-import { getUsuarioById, updateUsuario } from 'services/usuario'
-import { getEstadosUsuario } from 'services/estadoUsuario'
-import { getGrupos } from 'services/grupo'
-
 import Modal from 'components/Modal';
 import MessaggeInfo from 'components/MessageInfo';
-
-import { useChangeTitle } from 'hooks/useChangeTitle'
-import { useMessageModal } from 'hooks/useMessageModal';
+import Loader from 'components/Loader'
+import 'styles/Form.css';
 
 export default function UpdateUsuario() {
 
@@ -29,10 +25,8 @@ export default function UpdateUsuario() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const {error, modalActive, setSuccesMsg, setErrorMsg, setClearMsg } = useMessageModal()
+  const { error, modalActive, setSuccesMsg, setErrorMsg, setClearMsg } = useMessageModal()
 
-  const [estados, setEstados] = useState([]);
-  const [grupos, setGrupos] = useState([]);
   const [initialValues, setInitialValues] = useState({
     nombre: '',
     apellido: '',
@@ -48,23 +42,11 @@ export default function UpdateUsuario() {
     const estados = await getEstadosUsuario();
     const grupos = await getGrupos();
 
-    return {
-      usuario,
-      estados,
-      grupos
-    }
+    return { usuario, estados, grupos }
   }
 
-  const { isLoading } = useQuery(['usuarioUpdateData', id], () => handleGetData(id), {
-    onSuccess: (data) => {
-      const { usuario, estados, grupos } = data;
-      setEstados(estados);
-      setGrupos(grupos.map((grupo) => {
-        return {
-          id: grupo.id,
-          nombre: grupo.nombre
-        }
-      }));
+  const { isLoading, data: { estados, grupos } } = useQuery(['usuarioUpdateData', id], () => handleGetData(id), {
+    onSuccess: ({ usuario }) => {
       setInitialValues({
         nombre: usuario.nombre,
         apellido: usuario.apellido,
@@ -72,23 +54,22 @@ export default function UpdateUsuario() {
         email: usuario.email,
         confirmEmail: usuario.email,
         estado: usuario.estado.id,
-        grupos: usuario.grupos.map((grupo) => grupo.id.toString())
+        grupos: usuario.grupos.map(grupo => grupo.id.toString())
       });
-    }, refetchOnWindowFocus: false }
-  );
+    }, refetchOnWindowFocus: false,
+    initialData: {
+      usuario: {},
+      estados: [],
+      grupos: []
+    }
+  });
 
   const usuarioUpdateMutation = useMutation(updateUsuario, {
     onSuccess: setSuccesMsg,
     onError: setErrorMsg
   });
 
-  const onSubmit = values => {
-
-    const {confirmEmail, ...newValues} = values;
-    newValues.id = id;
-
-    usuarioUpdateMutation.mutate(newValues)
-  }
+  const onSubmit = ({ confirmEmail, ...newValues }) => usuarioUpdateMutation.mutate({ id, ...newValues })
 
   return (
     <Formik
@@ -108,7 +89,6 @@ export default function UpdateUsuario() {
                 errors={errors.nombre}
                 touched={touched.nombre}
             />
-
             <FieldText
               label='Apellido'
               name='apellido'
@@ -117,7 +97,6 @@ export default function UpdateUsuario() {
               errors={errors.apellido}
               touched={touched.apellido}
             />
-
             <FieldText
               label='Username'
               name='username'
@@ -126,7 +105,6 @@ export default function UpdateUsuario() {
               errors={errors.username}
               touched={touched.username}
             />
-
             <FieldText
               label='Email'
               name='email'
@@ -135,7 +113,6 @@ export default function UpdateUsuario() {
               errors={errors.email}
               touched={touched.email}
             />
-
             <FieldText
               label='Confirma el Email'
               name='confirmEmail'
@@ -144,24 +121,22 @@ export default function UpdateUsuario() {
               errors={errors.confirmEmail}
               touched={touched.confirmEmail}
             />
-
             <FieldSelect
               label='Estado'
               name='estado'
               options={estados}
             />
-
             <ButtonSlicer
               fisrtSection="Usuario"
               secondSection="Grupos"
             />
-
             <CheckboxGroup
               label="Grupos"
               name="grupos"
-              values={grupos}
+              values={grupos.map(grupo => {
+                return { id: grupo.id, nombre: grupo.nombre }
+              })}
             />
-
             <FieldButton type='submit' name='Actualizar Usuario' />
             <FieldButton type='button' name='Cancelar' onClick={() => navigate(-1)} />
           </div>

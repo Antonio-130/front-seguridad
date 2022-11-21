@@ -1,13 +1,13 @@
-import React, {useContext} from "react"
-import MenuUsuario from "./MenuUsuario"
-import 'styles/Header.css'
+import { useContext } from "react"
 import { Link, useNavigate, useLocation } from "react-router-dom"
-import UsuarioContext from "context/UsuarioContext"
-import logo from "assets/security-logo.svg"
 import { useTokenValidation } from "hooks/useTokenValidation"
+import MenuUsuario from "./MenuUsuario"
+import logo from "assets/security-logo.svg"
+import UsuarioContext from "context/UsuarioContext"
+import 'styles/Header.css'
 
 export default function Header() {
-  const {isLogged, hasAccesoByTag} = useContext(UsuarioContext)
+  const { isLogged, hasAccesoByTag } = useContext(UsuarioContext)
   const navigate = useNavigate()
   const location = useLocation()
   useTokenValidation(location.state?.prevUrl === '/auth/login' ? true : false)

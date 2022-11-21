@@ -1,39 +1,31 @@
-import React, { useState } from 'react'
 import { Formik, Form } from 'formik'
+import { useNavigate } from 'react-router-dom'
+import { useQuery, useMutation } from 'react-query'
+import { useChangeTitle } from 'hooks/useChangeTitle'
+import { useMessageModal } from 'hooks/useMessageModal'
+import { useGeneratePassword } from 'hooks/useGeneratePassword'
 import { createUsuarioValidation } from 'schemas/validation'
-import 'styles/Form.css'
-import Loader from 'components/Loader'
-
+import { createUsuario } from 'services/usuario'
+import { getEstadosUsuario } from 'services/estadoUsuario'
+import { getGrupos } from 'services/grupo'
+import { sendEmail } from 'services/auth'
 import FieldText from 'components/inputsForm/FieldText'
 import FieldButton from 'components/inputsForm/FieldButton'
 import FieldSelect from 'components/inputsForm/FieldSelect'
 import CheckboxGroup from 'components/inputsForm/CheckboxGroup'
 import ButtonSlicer from 'components/inputsForm/ButtonSlicer'
-import { createUsuario } from 'services/usuario'
-import { getEstadosUsuario } from 'services/estadoUsuario'
-import { getGrupos } from 'services/grupo'
-import { sendEmail } from 'services/auth'
-import { useNavigate } from 'react-router-dom'
-
-import { useQuery, useMutation } from 'react-query'
-
-import { useChangeTitle } from 'hooks/useChangeTitle'
-import { useGeneratePassword } from 'hooks/useGeneratePassword'
 import Modal from 'components/Modal'
-import { useMessageModal } from 'hooks/useMessageModal'
 import MessaggeInfo from 'components/MessageInfo'
+import Loader from 'components/Loader'
+import 'styles/Form.css'
 
 export default function CreateUsuario() {
 
   useChangeTitle('Crear Usuario')
 
-  const {error, modalActive, setClearMsg, setSuccesMsg, setErrorMsg} = useMessageModal()
+  const { error, modalActive, setClearMsg, setSuccesMsg, setErrorMsg } = useMessageModal()
 
   const navigate = useNavigate()
-
-  const [estados, setEstados] = useState([])
-
-  const [grupos, setGrupos] = useState([])
 
   const initialValues = {
     nombre: '',
@@ -49,18 +41,14 @@ export default function CreateUsuario() {
     const estados = await getEstadosUsuario()
     const grupos = await getGrupos()
 
-    return {estados,grupos}
+    return { estados, grupos }
   }
-  const {isLoading} = useQuery('createUsuarioData', handleGetData, {
-    onSuccess: (data) => {
-      const {estados, grupos} = data
-      setEstados(estados)
-      setGrupos(grupos.map((grupo) => {
-        return {
-          id: grupo.id,
-          nombre: grupo.nombre
-        }
-      }))
+
+  const { isLoading, data: { estados, grupos } } = useQuery('createUsuarioData', handleGetData, {
+    refetchOnWindowFocus: false,
+    initialData: {
+      estados: [],
+      grupos: []
     }
   })
 
@@ -75,11 +63,8 @@ export default function CreateUsuario() {
 
   const newPass = useGeneratePassword(8)
 
-  const onSubmit = values => {
-    const {confirmEmail, ...newValues} = values
-    newValues.clave = newPass
-
-    createUsuarioMutation.mutate(newValues, {
+  const onSubmit = ({ confirmEmail, ...newValues }) => {
+    createUsuarioMutation.mutate({ clave: newPass, ...newValues }, {
       onSuccess: () => {
         sendEmailMutation.mutate({
           email: newValues.email,
@@ -107,7 +92,6 @@ export default function CreateUsuario() {
                 errors={errors.nombre}
                 touched={touched.nombre}
             />
-
             <FieldText
               label='Apellido'
               name='apellido'
@@ -116,7 +100,6 @@ export default function CreateUsuario() {
               errors={errors.apellido}
               touched={touched.apellido}
             />
-
             <FieldText
               label='Username'
               name='username'
@@ -125,7 +108,6 @@ export default function CreateUsuario() {
               errors={errors.username}
               touched={touched.username}
             />
-
             <FieldText
               label='Email'
               name='email'
@@ -134,7 +116,6 @@ export default function CreateUsuario() {
               errors={errors.email}
               touched={touched.email}
             />
-
             <FieldText
               label='Confirma el Email'
               name='confirmEmail'
@@ -143,13 +124,11 @@ export default function CreateUsuario() {
               errors={errors.confirmEmail}
               touched={touched.confirmEmail}
             />
-
             <FieldSelect
               label='Estado'
               name='estado'
               options={estados}
             />
-
             <ButtonSlicer
               fisrtSection="Usuario"
               secondSection="Grupos"
@@ -157,13 +136,14 @@ export default function CreateUsuario() {
             <CheckboxGroup
               label='Grupos'
               name='grupos'
-              values={grupos}
+              values={grupos.map(grupo => {
+                return { id: grupo.id, nombre: grupo.nombre }
+              })}
             />
-
             <FieldButton type='submit' name='Crear Usuario' />
             <FieldButton type='button' name='Cancelar' onClick={() => navigate(-1)} />
           </div>
-          {isLoading && <Loader />}
+          {(isLoading || createUsuarioMutation.isLoading || sendEmailMutation.isLoading) && <Loader />}
           <Modal active={modalActive}>
             {!error && (
               <MessaggeInfo

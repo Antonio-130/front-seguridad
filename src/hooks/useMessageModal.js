@@ -1,10 +1,11 @@
 import { useReducer } from "react"
+
 export const useMessageModal = () => {
   const [state, dispatch] = useReducer(messageReducer, {error: false, modalActive: false})
 
-  const setSuccesMsg = () => dispatch({type: types.SUCCESS})
-  const setErrorMsg = () => dispatch({type: types.ERROR})
-  const setClearMsg = () => dispatch({type: types.CLEAR})
+  const setSuccesMsg = () => dispatch({ type: types.SUCCESS })
+  const setErrorMsg = () => dispatch({ type: types.ERROR })
+  const setClearMsg = () => dispatch({ type: types.CLEAR })
 
   return {
     setSuccesMsg,

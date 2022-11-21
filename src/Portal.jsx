@@ -1,9 +1,9 @@
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 import ReactDOM from 'react-dom';
 
 const portalRoot = document.getElementById('portal');
 
-export default function Portal(props) {
+export default function Portal({ children }) {
   const el = document.createElement('div');
 
   useEffect(() => {
@@ -12,8 +12,6 @@ export default function Portal(props) {
       portalRoot.removeChild(el);
     }
   }, [el])
-
-  const { children } = props;
 
   return ReactDOM.createPortal(children, el);
 }

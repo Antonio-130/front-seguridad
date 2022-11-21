@@ -1,5 +1,5 @@
-import React, {useReducer} from "react"
-import { types,  usuarioReducer } from "./UsuarioReducer"
+import { useReducer } from "react"
+import { types, usuarioReducer } from "./UsuarioReducer"
 import UsuarioContext from "./UsuarioContext"
 
 const UsuarioState = ({ children }) => {
@@ -28,17 +28,14 @@ const UsuarioState = ({ children }) => {
   const handleLogin = (usuario, token, acciones) => {
     dispatch({
       type: types.LOGIN,
-      payload: {
-        usuario,
-        acciones,
-      },
+      payload: { usuario, acciones }
     })
     localStorage.setItem('usuario', JSON.stringify(usuario))
     localStorage.setItem('token', JSON.stringify(token))
     localStorage.setItem('acciones', JSON.stringify(acciones))
   }
 
-  const handleAutoLogin = (usuario, token, acciones) => {
+  const handleAutoLogin = (usuario, acciones) => {
     dispatch({
       type: types.AUTO_LOGIN,
       payload: { usuario, acciones }

@@ -1,33 +1,27 @@
-import React, {useContext} from 'react'
+import { useContext } from 'react'
 import { Formik, Form } from 'formik'
-import { changeClaveValidation } from 'schemas/validation'
-import 'styles/Form.css'
-import Loader from 'components/Loader'
-
-import UsuarioContext from 'context/UsuarioContext'
-
-import FieldText from 'components/inputsForm/FieldText'
-import FieldButton from 'components/inputsForm/FieldButton'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from 'react-query'
-
+import { useChangeTitle } from 'hooks/useChangeTitle'
+import { useMessageModal } from 'hooks/useMessageModal'
+import { changeClaveValidation } from 'schemas/validation'
 import { changeClave } from 'services/auth'
-
+import FieldText from 'components/inputsForm/FieldText'
+import FieldButton from 'components/inputsForm/FieldButton'
 import Modal from './Modal'
 import MessageInfo from './MessageInfo'
-
-import { useChangeTitle } from 'hooks/useChangeTitle'
-
-import { useMessageModal } from 'hooks/useMessageModal'
+import Loader from 'components/Loader'
+import UsuarioContext from 'context/UsuarioContext'
+import 'styles/Form.css'
 
 export default function ChangeClave() {
 
 
   useChangeTitle('Cambiar contraseña')
 
-  const {handleLogout} = useContext(UsuarioContext)
+  const { handleLogout } = useContext(UsuarioContext)
 
-  const {error, modalActive, setSuccesMsg, setErrorMsg, setClearMsg} = useMessageModal()
+  const { error, modalActive, setSuccesMsg, setErrorMsg, setClearMsg } = useMessageModal()
 
   const navigate = useNavigate()
 
@@ -42,15 +36,9 @@ export default function ChangeClave() {
     onError: setErrorMsg
   })
 
-  const onSubmit = values => {
-    const {id} = JSON.parse(localStorage.getItem('usuario'))
-    const newValues = {
-      id,
-      clave: values.clave,
-      newClave: values.newClave,
-    }
-
-    changeClaveMutation.mutate(newValues)
+  const onSubmit = ({ clave, newClave }) => {
+    const { id } = JSON.parse(localStorage.getItem('usuario'))
+    changeClaveMutation.mutate({ id, clave, newClave })
   }
 
   const handleOnSuccess = () => {
@@ -76,7 +64,6 @@ export default function ChangeClave() {
                 errors={errors.clave}
                 touched={touched.clave}
             />
-
             <FieldText
               label='Nueva clave'
               name='newClave'
@@ -85,7 +72,6 @@ export default function ChangeClave() {
               errors={errors.newClave}
               touched={touched.newClave}
             />
-
             <FieldText
               label='Confirmar nueva clave'
               name='confirmNewClave'
@@ -94,7 +80,6 @@ export default function ChangeClave() {
               errors={errors.confirmNewClave}
               touched={touched.confirmNewClave}
             />
-
             <FieldButton type='submit' name='Cambiar contraseña' />
             <FieldButton type='button' name='Cancelar' onClick={() => navigate(-1)} />
           </div>

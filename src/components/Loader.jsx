@@ -1,25 +1,4 @@
-import React from 'react'
-
 export default function Loader() {
-  const styles = {
-    svg: {
-      margin: 'auto',
-      backgroundColor: 'transparent',
-      display: 'block',
-    },
-    loaderContainer: {
-      width: '100%',
-      height: '100%',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#00000080',
-      zIndex: 9999,
-      position: 'fixed',
-      top: 0,
-      left: 0,
-    }
-  }
   return (
     <div style={styles.loaderContainer}>
       <svg style={styles.svg} width="150px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
@@ -45,4 +24,24 @@ export default function Loader() {
       </svg>
     </div>
   )
+}
+
+const styles = {
+  svg: {
+    margin: 'auto',
+    backgroundColor: 'transparent',
+    display: 'block',
+  },
+  loaderContainer: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#00000080',
+    zIndex: 9999,
+    position: 'fixed',
+    top: 0,
+    left: 0,
+  }
 }

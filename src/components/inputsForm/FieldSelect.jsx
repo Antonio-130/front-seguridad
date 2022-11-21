@@ -1,7 +1,6 @@
-import React from 'react'
 import { Field } from 'formik'
 
-export default function FieldSelect({label, name, options}) {
+export default function FieldSelect({ label, name, options }) {
   return (
     <div className='form-select-container'>
       <label htmlFor={name} className='form-input-label'>{label}</label>
