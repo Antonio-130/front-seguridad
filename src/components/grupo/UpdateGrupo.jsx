@@ -38,8 +38,8 @@ export default function UpdateGrupo() {
     const grupo = await getGrupoById(idGrupo)
 
     return {
-      grupo: grupo.data,
-      acciones: acciones.data
+      grupo,
+      acciones
     }
   }
 

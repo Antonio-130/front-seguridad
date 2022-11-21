@@ -7,7 +7,7 @@ export default function FieldSelect({label, name, options}) {
       <label htmlFor={name} className='form-input-label'>{label}</label>
       <Field as="select" name={name} id={name} className="form-input-select">
         {options.map(option => (
-          <option key={option.id} value={option.id}>
+          <option key={option.id} value={option.id.toString()}>
             {option.nombre[0].toUpperCase() + option.nombre.slice(1)}
           </option>
         ))}

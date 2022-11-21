@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { loginValidation } from 'schemas/validation'
@@ -9,21 +9,27 @@ import FieldText from 'components/inputsForm/FieldText'
 import FieldButton from 'components/inputsForm/FieldButton'
 
 import UsuarioContext from 'context/UsuarioContext'
+import { useMutation } from 'react-query'
 
 import { login } from 'services/auth'
 
+import Modal from 'components/Modal'
+import MessageInfo from 'components/MessageInfo'
+
 import { useChangeTitle } from 'hooks/useChangeTitle'
+import { useMessageModal } from 'hooks/useMessageModal'
 
 export default function Login() {
 
   useChangeTitle('Iniciar sesión')
 
-  const {types, dispatch} = useContext(UsuarioContext)
+  const {handleLogin} = useContext(UsuarioContext)
+
+  const {error, modalActive, setErrorMsg, setClearMsg} = useMessageModal()
 
   let navigate = useNavigate()
 
-  const [error, setError] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const loginMutation = useMutation(login)
 
   const initialValues = {
     emailOrUsername: '',
@@ -31,36 +37,17 @@ export default function Login() {
   }
 
   const onSubmit = values => {
-    setLoading(true)
     const new_data = transformData(values)
-    login(new_data).then((res) => {
-      if (res.status === "success") {
-        dispatch({
-          type: types.LOGIN,
-          payload: {
-            usuario: res.data[0],
-            acciones: res.data[2].acciones,
-          },
-        })
-        localStorage.setItem('usuario', JSON.stringify(res.data[0]))
-        localStorage.setItem('token', JSON.stringify(res.data[1].token))
-        localStorage.setItem('acciones', JSON.stringify(res.data[2].acciones))
-        setError(false)
-        setLoading(false)
+    loginMutation.mutate(new_data, {
+      onSuccess: (data) => {
+        handleLogin(data[0], data[1].token, data[2].acciones)
         navigate('/', {
           state: {
             prevUrl: '/auth/login',
           }
         })
-      }
-      else {
-        setLoading(false)
-        setError(true)
-      }
-    }).catch((err) => {
-      setError(true)
-      setLoading(false)
-      console.log(err)
+      },
+      onError: setErrorMsg
     })
   }
 
@@ -100,13 +87,17 @@ export default function Login() {
             />
 
             <FieldButton type='submit' name='Iniciar sesión' />
-            {error &&
-              <div className='error-container'>
-                <p>Login incorrecto</p>
-              </div>
-            }
           </div>
-          {loading && <Loader />}
+          {loginMutation.isLoading && <Loader />}
+          <Modal active={modalActive}>
+            {error && (
+              <MessageInfo
+                message='Login incorrecto'
+                type='error'
+                onClick={setClearMsg}
+              />
+            )}
+          </Modal>
         </Form>
       )}
     </Formik>

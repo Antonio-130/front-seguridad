@@ -1,4 +1,4 @@
-import {isUnAuthorized} from '../response'
+import {isError} from '../response'
 
 export const login = async (values) => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
@@ -8,6 +8,8 @@ export const login = async (values) => {
     },
     body: JSON.stringify(values)
   })
+
+  isError(response)
 
   const data = await response.json()
 
@@ -23,7 +25,7 @@ export const autoLogin = async (token) => {
     body: JSON.stringify({token})
   })
 
-  isUnAuthorized(response)
+  isError(response)
 
   const data = await response.json()
 
@@ -49,6 +51,22 @@ export const changeClave = async (values) => {
     },
     body: JSON.stringify(values)
   })
+
+  isError(response)
+
+  return response
+}
+
+export const sendEmail = async (values) => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/email`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(values)
+  })
+
+  isError(response)
 
   const data = await response.json()
 

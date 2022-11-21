@@ -24,16 +24,7 @@ export const createUsuarioValidation = Yup.object({
     .email('Direccion de Email invalida')
     .required('Requerido')
     .trim()
-    .oneOf([Yup.ref('email'), null], 'Las direcciones de email no coinciden'),
-  clave: Yup.string()
-    .required('Requerido')
-    .min(6, 'La clave debe tener más de 6 caracteres')
-    .trim(),
-  confirmClave: Yup.string()
-    .required('Requerido')
-    .min(6, 'La clave debe tener más de 6 caracteres')
-    .trim()
-    .oneOf([Yup.ref('clave'), null], 'Las claves no coinciden')
+    .oneOf([Yup.ref('email'), null], 'Las direcciones de email no coinciden')
 })
 
 export const updateUsuarioValidation = Yup.object({

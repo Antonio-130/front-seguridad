@@ -17,15 +17,10 @@ export const useTokenValidation = (isLogin) => {
     enabled: Boolean(token && (!usuario || !acciones)),
     refetchOnWindowFocus: false,
     retry: false,
-    onSuccess: (res) => {
-      if (res.status === "success") {
-        localStorage.setItem("usuario", JSON.stringify(res.data[0]))
-        localStorage.setItem("acciones", JSON.stringify(res.data[1].acciones))
-        handleAutoLogin(res.data[0], res.data[1].acciones)
-      }
-      else{
-        handleLogout()
-      }
+    onSuccess: (data) => {
+      localStorage.setItem("usuario", JSON.stringify(data[0]))
+      localStorage.setItem("acciones", JSON.stringify(data[1].acciones))
+      handleAutoLogin(data[0], data[1].acciones)
     }
   })
 

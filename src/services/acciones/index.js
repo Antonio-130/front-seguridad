@@ -1,5 +1,5 @@
 import { getHeaders } from '../headers'
-import { isUnAuthorized } from '../response'
+import { isError } from '../response'
 
 export const getAcciones = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/acciones`, {
@@ -7,7 +7,7 @@ export const getAcciones = async () => {
     headers: getHeaders()
   })
 
-  isUnAuthorized(response)
+  isError(response)
 
   const data = await response.json()
 
@@ -20,7 +20,7 @@ export const getAccionById = async (id) => {
     headers: getHeaders()
   })
 
-  isUnAuthorized(response)
+  isError(response)
 
   const data = await response.json()
 
@@ -34,7 +34,7 @@ export const createAccion = async (accion) => {
     body: JSON.stringify(accion)
   })
 
-  isUnAuthorized(response)
+  isError(response)
 
   const data = await response.json()
 
@@ -48,7 +48,7 @@ export const updateAccion = async (accion) => {
     body: JSON.stringify(accion)
   })
 
-  isUnAuthorized(response)
+  isError(response)
 
   const data = await response.json()
 
@@ -61,7 +61,7 @@ export const deleteAccion = async (id) => {
     headers: getHeaders()
   })
 
-  isUnAuthorized(response)
+  isError(response)
 
   const data = await response.json()
 

@@ -27,7 +27,7 @@ export default function CreateGrupo() {
 
   const { isLoading } = useQuery(['acciones'], getAcciones, {
     onSuccess: (acciones) => {
-      setAcciones(acciones.data)
+      setAcciones(acciones)
     },
     refetchOnWindowFocus: false
   })

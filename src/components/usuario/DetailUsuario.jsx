@@ -24,7 +24,7 @@ export default function DetailUsuario() {
 
   const { isLoading } = useQuery(['usuario', id], () => getUsuarioById(id), {
     onSuccess: (data) => {
-      const usuario = data.data
+      const usuario = data
       setUsuario({
         nombre: usuario.nombre,
         apellido: usuario.apellido,

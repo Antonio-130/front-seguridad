@@ -22,7 +22,7 @@ export default function ListOfestadosUsuario() {
 
   const { isLoading } = useQuery(['estadosUsuario'], getEstadosUsuario, {
     onSuccess: (data) => {
-      setEstadosUsuario(data.data)
+      setEstadosUsuario(data)
     }, refetchOnWindowFocus: false
   })
 

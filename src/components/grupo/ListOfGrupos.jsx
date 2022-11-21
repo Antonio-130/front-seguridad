@@ -25,7 +25,7 @@ export default function ListOfGrupos() {
       console.log(error)
     },
     onSuccess: (data) => {
-      setGrupos(data.data)
+      setGrupos(data)
     }
   })
 

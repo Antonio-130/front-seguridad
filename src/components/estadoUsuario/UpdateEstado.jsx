@@ -25,7 +25,7 @@ export default function UpdateEstado() {
 
   const { isLoading } = useQuery(['estadoUsuario', id], () => getEstadoUsuarioById(id), {
     onSuccess: (data) => {
-      const { nombre } = data.data
+      const { nombre } = data
       setInitialValues({
         nombre
       })

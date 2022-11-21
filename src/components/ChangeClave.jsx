@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useContext} from 'react'
 import { Formik, Form } from 'formik'
 import { changeClaveValidation } from 'schemas/validation'
 import 'styles/Form.css'
@@ -14,19 +14,22 @@ import { useMutation } from 'react-query'
 import { changeClave } from 'services/auth'
 
 import Modal from './Modal'
-import { MessaggeErrorAndSuccess } from './MessageInfo'
+import MessageInfo from './MessageInfo'
 
 import { useChangeTitle } from 'hooks/useChangeTitle'
 
+import { useMessageModal } from 'hooks/useMessageModal'
+
 export default function ChangeClave() {
+
 
   useChangeTitle('Cambiar contraseña')
 
   const {handleLogout} = useContext(UsuarioContext)
 
-  const navigate = useNavigate()
+  const {error, modalActive, setSuccesMsg, setErrorMsg, setClearMsg} = useMessageModal()
 
-  const [modalActive, setModalActive] = useState(false);
+  const navigate = useNavigate()
 
   const initialValues = {
     clave: '',
@@ -34,16 +37,26 @@ export default function ChangeClave() {
     confirmNewClave: '',
   }
 
-  const changeClaveMutation = useMutation(changeClave)
+  const changeClaveMutation = useMutation(changeClave, {
+    onSuccess: setSuccesMsg,
+    onError: setErrorMsg
+  })
 
   const onSubmit = values => {
+    const {id} = JSON.parse(localStorage.getItem('usuario'))
     const newValues = {
-      token: JSON.parse(localStorage.getItem('token')),
+      id,
       clave: values.clave,
       newClave: values.newClave,
     }
 
     changeClaveMutation.mutate(newValues)
+  }
+
+  const handleOnSuccess = () => {
+    setClearMsg()
+    handleLogout()
+    navigate('/auth/login')
   }
 
   return (
@@ -82,19 +95,25 @@ export default function ChangeClave() {
               touched={touched.confirmNewClave}
             />
 
-            <FieldButton type='submit' name='Cambiar contraseña' onClick={() => setModalActive(true)} />
+            <FieldButton type='submit' name='Cambiar contraseña' />
             <FieldButton type='button' name='Cancelar' onClick={() => navigate(-1)} />
           </div>
           {changeClaveMutation.isLoading && <Loader />}
           <Modal active={modalActive}>
-            <MessaggeErrorAndSuccess
-              isSuccess={changeClaveMutation.isSuccess}
-              messageSuccess="Clave actualizada!"
-              onClickSuccess={() => {setModalActive(false); handleLogout(); navigate('/auth/login')}}
-              isError={changeClaveMutation.isError}
-              messageError="Error al actualizar la clave"
-              onClickError={() => setModalActive(false)}
-            />
+            {!error && (
+              <MessageInfo
+                message='Contraseña cambiada con éxito'
+                type='success'
+                onClick={handleOnSuccess}
+              />
+            )}
+            {error && (
+              <MessageInfo
+                message='Contraseña incorrecta'
+                type='error'
+                onClick={setClearMsg}
+              />
+            )}
           </Modal>
         </Form>
       )}

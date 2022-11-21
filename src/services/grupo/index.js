@@ -1,5 +1,5 @@
 import { getHeaders } from '../headers'
-import { isUnAuthorized } from '../response'
+import { isError } from '../response'
 
 export const getGrupos = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/grupos`, {
@@ -7,7 +7,7 @@ export const getGrupos = async () => {
     headers: getHeaders()
   })
 
-  isUnAuthorized(response)
+  isError(response)
 
   const data = await response.json()
 
@@ -20,7 +20,7 @@ export const getGrupoById = async (id) => {
     headers: getHeaders()
   })
 
-  isUnAuthorized(response)
+  isError(response)
 
   const data = await response.json()
 
@@ -34,7 +34,7 @@ export const createGrupo = async (grupo) => {
     body: JSON.stringify(grupo)
   })
 
-  isUnAuthorized(response)
+  isError(response)
 
   const data = await response.json()
 
@@ -48,7 +48,7 @@ export const updateGrupo = async (grupo) => {
     body: JSON.stringify(grupo)
   })
 
-  isUnAuthorized(response)
+  isError(response)
 
   const data = await response.json()
 
@@ -61,7 +61,7 @@ export const deleteGrupo = async (id) => {
     headers: getHeaders()
   })
 
-  isUnAuthorized(response)
+  isError(response)
 
   const data = await response.json()
 

@@ -2,11 +2,13 @@ import React from 'react'
 import { Formik, Form } from 'formik'
 import { createAndUpdateEstadoUsuarioValidation } from 'schemas/validation'
 import 'styles/Form.css'
+import Loader from 'components/Loader'
 
 import FieldText from 'components/inputsForm/FieldText'
 import FieldButton from 'components/inputsForm/FieldButton'
 import { createEstadoUsuario } from 'services/estadoUsuario'
 import { useNavigate } from 'react-router-dom'
+import { useMutation } from 'react-query'
 
 import { useChangeTitle } from 'hooks/useChangeTitle'
 
@@ -20,19 +22,10 @@ export default function CreateEstado() {
     nombre: '',
   }
 
-  const onSubmit = values => {
-    alert(JSON.stringify(values))
+  const createEstadoUsuarioMutation = useMutation(createEstadoUsuario)
 
-    /* createEstadoUsuario(values).then(response => {
-      console.log(response)
-      setTimeout(() => {
-        navigate(-1)
-      }
-      , 1000)
-    }
-    ).catch(error => {
-      console.log(error)
-    }) */
+  const onSubmit = values => {
+    createEstadoUsuarioMutation.mutate(values)
   }
 
   return (
@@ -56,6 +49,7 @@ export default function CreateEstado() {
             <FieldButton type='submit' name='Crear Estado' />
             <FieldButton type='button' name='Cancelar' onClick={() => navigate(-1)} />
           </div>
+          {createEstadoUsuarioMutation.isLoading && <Loader />}
         </Form>
       )}
     </Formik>

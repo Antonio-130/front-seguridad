@@ -1,5 +1,5 @@
 import { getHeaders } from '../headers'
-import { isUnAuthorized } from '../response'
+import { isError } from '../response'
 
 export const getEstadosUsuario = async () => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/estadosUsuario`, {
@@ -7,7 +7,7 @@ export const getEstadosUsuario = async () => {
     headers: getHeaders()
   })
 
-  isUnAuthorized(response)
+  isError(response)
 
   const data = await response.json()
 
@@ -20,7 +20,7 @@ export const getEstadoUsuarioById = async (id) => {
     headers: getHeaders()
   })
 
-  isUnAuthorized(response)
+  isError(response)
 
   const data = await response.json()
 
@@ -34,7 +34,7 @@ export const createEstadoUsuario = async (estadoUsuario) => {
     body: JSON.stringify(estadoUsuario)
   })
 
-  isUnAuthorized(response)
+  isError(response)
 
   const data = await response.json()
 
@@ -48,7 +48,7 @@ export const updateEstadoUsuario = async (estadoUsuario) => {
     body: JSON.stringify(estadoUsuario)
   })
 
-  isUnAuthorized(response)
+  isError(response)
 
   const data = await response.json()
 
@@ -61,7 +61,7 @@ export const deleteEstadoUsuario = async (id) => {
     headers: getHeaders()
   })
 
-  isUnAuthorized(response)
+  isError(response)
 
   const data = await response.json()
 

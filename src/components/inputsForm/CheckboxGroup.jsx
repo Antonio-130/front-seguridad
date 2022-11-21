@@ -24,7 +24,7 @@ export default function CheckboxGroup({label, name, values, sections}) {
                       key={value.id}
                       label={value.nombre[0].toUpperCase() + value.nombre.slice(1)}
                       name={name}
-                      value={value.id.toString()}
+                      value={value.id}
                     />
                   )
                 })}
@@ -36,7 +36,7 @@ export default function CheckboxGroup({label, name, values, sections}) {
             key={value.id}
             label={value.nombre[0].toUpperCase() + value.nombre.slice(1)}
             name={name}
-            value={value.id.toString()}
+            value={value.id}
           />
         ))}
       </div>

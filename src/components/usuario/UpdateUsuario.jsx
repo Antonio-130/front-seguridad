@@ -17,9 +17,10 @@ import { getEstadosUsuario } from 'services/estadoUsuario'
 import { getGrupos } from 'services/grupo'
 
 import Modal from 'components/Modal';
-import { MessaggeErrorAndSuccess } from 'components/MessageInfo';
+import MessaggeInfo from 'components/MessageInfo';
 
 import { useChangeTitle } from 'hooks/useChangeTitle'
+import { useMessageModal } from 'hooks/useMessageModal';
 
 export default function UpdateUsuario() {
 
@@ -27,6 +28,8 @@ export default function UpdateUsuario() {
 
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const {error, modalActive, setSuccesMsg, setErrorMsg, setClearMsg } = useMessageModal()
 
   const [estados, setEstados] = useState([]);
   const [grupos, setGrupos] = useState([]);
@@ -46,13 +49,11 @@ export default function UpdateUsuario() {
     const grupos = await getGrupos();
 
     return {
-      usuario: usuario.data,
-      estados: estados.data,
-      grupos: grupos.data
+      usuario,
+      estados,
+      grupos
     }
   }
-
-  const [modalActive, setModalActive] = useState(false);
 
   const { isLoading } = useQuery(['usuarioUpdateData', id], () => handleGetData(id), {
     onSuccess: (data) => {
@@ -76,18 +77,16 @@ export default function UpdateUsuario() {
     }, refetchOnWindowFocus: false }
   );
 
-  const usuarioUpdateMutation = useMutation(updateUsuario);
+  const usuarioUpdateMutation = useMutation(updateUsuario, {
+    onSuccess: setSuccesMsg,
+    onError: setErrorMsg
+  });
 
   const onSubmit = values => {
-    const newValues = {
-      id,
-      nombre: values.nombre,
-      apellido: values.apellido,
-      username: values.username,
-      email: values.email,
-      estado: values.estado,
-      grupos: values.grupos
-    }
+
+    const {confirmEmail, ...newValues} = values;
+    newValues.id = id;
+
     usuarioUpdateMutation.mutate(newValues)
   }
 
@@ -163,19 +162,25 @@ export default function UpdateUsuario() {
               values={grupos}
             />
 
-            <FieldButton type='submit' name='Actualizar Usuario' onClick={() => setModalActive(true)} />
+            <FieldButton type='submit' name='Actualizar Usuario' />
             <FieldButton type='button' name='Cancelar' onClick={() => navigate(-1)} />
           </div>
           {(isLoading || usuarioUpdateMutation.isLoading) && <Loader />}
           <Modal active={modalActive}>
-            <MessaggeErrorAndSuccess
-              isSuccess={usuarioUpdateMutation.isSuccess}
-              messageSuccess="Usuario actualizado!"
-              onClickSuccess={() => {setModalActive(false); navigate(-1)}}
-              isError={usuarioUpdateMutation.isError}
-              messageError="Error al actualizar el usuario"
-              onClickError={() => setModalActive(false)}
-            />
+            {!error && (
+              <MessaggeInfo
+                message="Usuario actualizado correctamente"
+                type="success"
+                onClick={() => {setClearMsg(); navigate(-1)}}
+              />
+            )}
+            {error && (
+              <MessaggeInfo
+                message="Error al actualizar el usuario"
+                type="error"
+                onClick={setClearMsg}
+              />
+            )}
           </Modal>
         </Form>
       )}

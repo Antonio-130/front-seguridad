@@ -25,7 +25,20 @@ const UsuarioState = ({ children }) => {
     localStorage.removeItem("token")
   }
 
-  const handleAutoLogin = (usuario, acciones) => {
+  const handleLogin = (usuario, token, acciones) => {
+    dispatch({
+      type: types.LOGIN,
+      payload: {
+        usuario,
+        acciones,
+      },
+    })
+    localStorage.setItem('usuario', JSON.stringify(usuario))
+    localStorage.setItem('token', JSON.stringify(token))
+    localStorage.setItem('acciones', JSON.stringify(acciones))
+  }
+
+  const handleAutoLogin = (usuario, token, acciones) => {
     dispatch({
       type: types.AUTO_LOGIN,
       payload: { usuario, acciones }
@@ -49,11 +62,10 @@ const UsuarioState = ({ children }) => {
         acciones: state.acciones,
         isLogged: state.isLogged,
         handleLogout,
+        handleLogin,
         handleAutoLogin,
         hasAccesoByTag,
-        hasAccion,
-        dispatch,
-        types,
+        hasAccion
       }}
     >
       {children}

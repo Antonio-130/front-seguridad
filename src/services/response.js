@@ -1,7 +1,5 @@
-export const isUnAuthorized = (res) => {
-  if (res.status === 401 || res.status === 419) {
-    return {
-      status: "Unauthorized"
-    }
+export const isError = (response) => {
+  if (!response.ok) {
+    throw new Error(response.status)
   }
 }

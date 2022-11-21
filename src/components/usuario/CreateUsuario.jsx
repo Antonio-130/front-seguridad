@@ -12,15 +12,22 @@ import ButtonSlicer from 'components/inputsForm/ButtonSlicer'
 import { createUsuario } from 'services/usuario'
 import { getEstadosUsuario } from 'services/estadoUsuario'
 import { getGrupos } from 'services/grupo'
+import { sendEmail } from 'services/auth'
 import { useNavigate } from 'react-router-dom'
 
-import { useQuery } from 'react-query'
+import { useQuery, useMutation } from 'react-query'
 
 import { useChangeTitle } from 'hooks/useChangeTitle'
+import { useGeneratePassword } from 'hooks/useGeneratePassword'
+import Modal from 'components/Modal'
+import { useMessageModal } from 'hooks/useMessageModal'
+import MessaggeInfo from 'components/MessageInfo'
 
 export default function CreateUsuario() {
 
   useChangeTitle('Crear Usuario')
+
+  const {error, modalActive, setClearMsg, setSuccesMsg, setErrorMsg} = useMessageModal()
 
   const navigate = useNavigate()
 
@@ -34,20 +41,15 @@ export default function CreateUsuario() {
     username: '',
     email: '',
     confirmEmail: '',
-    clave: '',
-    confirmClave: '',
-    estado: '',
-    grupos: []
+    estado: '1',
+    grupos: ["2"]
   }
 
   const handleGetData = async () => {
     const estados = await getEstadosUsuario()
     const grupos = await getGrupos()
 
-    return {
-      estados: estados.data,
-      grupos: grupos.data
-    }
+    return {estados,grupos}
   }
   const {isLoading} = useQuery('createUsuarioData', handleGetData, {
     onSuccess: (data) => {
@@ -62,21 +64,29 @@ export default function CreateUsuario() {
     }
   })
 
+  const createUsuarioMutation = useMutation(createUsuario, {
+    onError: setErrorMsg
+  })
+
+  const sendEmailMutation = useMutation(sendEmail, {
+    onSuccess: setSuccesMsg,
+    onError: setErrorMsg
+  })
+
+  const newPass = useGeneratePassword(8)
+
   const onSubmit = values => {
-    delete values.confirmEmail
-    delete values.confirmClave
+    const {confirmEmail, ...newValues} = values
+    newValues.clave = newPass
 
-    alert(JSON.stringify(values))
-
-    createUsuario(values).then(response => {
-      console.log(response)
-      setTimeout(() => {
-        navigate(-1)
+    createUsuarioMutation.mutate(newValues, {
+      onSuccess: () => {
+        sendEmailMutation.mutate({
+          email: newValues.email,
+          username: newValues.username,
+          new_clave: newPass
+        })
       }
-      , 1000)
-    }
-    ).catch(error => {
-      console.log(error)
     })
   }
 
@@ -134,24 +144,6 @@ export default function CreateUsuario() {
               touched={touched.confirmEmail}
             />
 
-            <FieldText
-              label='Contraseña'
-              name='clave'
-              type='password'
-              placeholder='contraseña...'
-              errors={errors.clave}
-              touched={touched.clave}
-            />
-
-            <FieldText
-              label='Confirma la Contraseña'
-              name='confirmClave'
-              type='password'
-              placeholder='contraseña...'
-              errors={errors.confirmClave}
-              touched={touched.confirmClave}
-            />
-
             <FieldSelect
               label='Estado'
               name='estado'
@@ -172,6 +164,22 @@ export default function CreateUsuario() {
             <FieldButton type='button' name='Cancelar' onClick={() => navigate(-1)} />
           </div>
           {isLoading && <Loader />}
+          <Modal active={modalActive}>
+            {!error && (
+              <MessaggeInfo
+                message="Usuario creado correctamente"
+                type="success"
+                onClick={() => {setClearMsg(); navigate(-1)}}
+              />
+            )}
+            {error && (
+              <MessaggeInfo
+                message="Error al crear el usuario"
+                type="error"
+                onClick={setClearMsg}
+              />
+            )}
+          </Modal>
         </Form>
       )}
     </Formik>

@@ -24,7 +24,7 @@ export default function ListOfUsuarios() {
 
   const { isLoading } = useQuery(['usuarios'], getUsuarios, {
     onSuccess: (data) => {
-      setUsuarios(data.data)
+      setUsuarios(data)
     }, refetchOnWindowFocus: false
   })
 
