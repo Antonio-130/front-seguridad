@@ -17,7 +17,7 @@ export default function Header() {
   return (
     <>
       <div className="empty-space"></div>
-      <div className="header-container">
+      <header className="header-container">
         <figure>
           <img src={logo} alt="security logo" title="logo security" className="img-logo" onClick={() => navigate("/")} />
         </figure>
@@ -45,7 +45,7 @@ export default function Header() {
             Iniciar Sesion
           </button>
         </div>)}
-      </div>
+      </header>
     </>
   )
 }

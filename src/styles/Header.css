@@ -38,7 +38,7 @@
   align-self: center;
 }
 
-.main-container nav > a, p {
+.main-container nav > a, .header-container p{
   margin: 10px;
   padding: 5px;
   text-decoration: none;
