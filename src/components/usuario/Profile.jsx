@@ -83,8 +83,7 @@ export default function Profile() {
   });
 
   const onSubmit = ({ confirmEmail, ...newValues }) => {
-    console.log({id, ...newValues})
-    /* profileUpdateMutation.mutate({ id, ...newValues }) */
+    profileUpdateMutation.mutate({ id, ...newValues })
   }
 
   return (
