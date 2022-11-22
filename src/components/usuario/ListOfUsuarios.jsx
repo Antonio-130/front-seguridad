@@ -48,7 +48,7 @@ export default function ListOfUsuarios() {
             estado: user.estado.nombre,
             fecha_creacion: new Date(user.fecha_creacion).toLocaleDateString(),
           }
-        })}
+        }).sort((a, b) => b.id - a.id)}
         cant={10}
         name='usuarios'
         Component={Usuario}
