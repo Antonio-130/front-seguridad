@@ -2,16 +2,25 @@ import { useState } from "react"
 
 export const useFilterAndPagination = ({ values, cant, filterFields }) => {
   let newArr = [...values]
+  let max = Math.ceil(newArr.length / cant)
   const [currentPage, setCurrentPage] = useState(0)
   const [filter, setFilter] = useState("")
 
   const filteredArray = () => {
-    if (filter.length === 0) return newArr.slice(currentPage, currentPage + cant)
+    if (filter.length === 0) {
+      max = Math.ceil(newArr.length / cant)
+      return newArr.slice(currentPage, currentPage + cant)
+    }
     const filtered = newArr.filter(value => {
       return filterFields.some(field => {
         return value[field].toLowerCase().includes(filter.toLowerCase())
       })
     })
+    if (filtered.length === 0){
+      max = 1
+      return []
+    }
+    max = Math.ceil(filtered.length / cant)
     return filtered.slice(currentPage, currentPage + cant)
   }
 
@@ -38,6 +47,8 @@ export const useFilterAndPagination = ({ values, cant, filterFields }) => {
     onFilterChange,
     filteredArray: filteredArray(),
     nextPage,
-    prevPage
+    prevPage,
+    currentPage: currentPage / cant + 1,
+    max
   }
 }

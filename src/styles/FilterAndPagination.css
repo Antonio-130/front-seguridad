@@ -1,3 +1,5 @@
+@import url('styles/Variables.css');
+
 .filter-container {
   display: flex;
   justify-content: center;
@@ -21,4 +23,10 @@
 .btn-prev, .btn-next {
   margin: 0 10px;
   cursor: pointer;
+}
+
+.pages{
+  color: var(--c-white);
+  font-size: medium;
+  font-weight: 500;
 }

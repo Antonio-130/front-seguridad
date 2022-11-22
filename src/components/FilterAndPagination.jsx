@@ -3,7 +3,7 @@ import ListOfValues from "./ListOfValues"
 import 'styles/FilterAndPagination.css'
 
 export default function FilterAndPagination({ values, cant, name, Component, filterFields }) {
-  const { filter, onFilterChange, filteredArray, nextPage, prevPage } = useFilterAndPagination({ values, cant, filterFields })
+  const { filter, onFilterChange, filteredArray, nextPage, prevPage, max, currentPage } = useFilterAndPagination({ values, cant, filterFields })
   return (
     <>
       <ListOfValues name={name} values={filteredArray} Component={Component} />
@@ -22,6 +22,7 @@ export default function FilterAndPagination({ values, cant, name, Component, fil
           <button className="btn-prev form-btn" onClick={prevPage}>
             ⬅ Anterior
           </button>
+          <p className="pages">{currentPage + "-" + max}</p>
           <button className="btn-next form-btn" onClick={nextPage}>
             Siguiente ➡
           </button>
