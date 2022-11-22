@@ -1,4 +1,5 @@
 import { isError } from '../response'
+import { getHeaders } from 'services/headers'
 
 export const login = async (values) => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
@@ -60,9 +61,7 @@ export const changeClave = async (values) => {
 export const sendEmail = async (values) => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/email`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: getHeaders(),
     body: JSON.stringify(values)
   })
 
@@ -71,4 +70,16 @@ export const sendEmail = async (values) => {
   const data = await response.json()
 
   return data
+}
+
+export const resetClave = async (values) => {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/resetClave`, {
+    method: 'PUT',
+    headers: getHeaders(),
+    body: JSON.stringify(values)
+  })
+
+  isError(response)
+
+  return response
 }

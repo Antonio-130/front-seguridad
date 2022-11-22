@@ -42,10 +42,17 @@ export default function ListOfUsuarios() {
       </header>
       {isLoading && <Loader />}
       <FilterAndPagination
-        values={usuarios.filter(user => user.id !== id)}
+        values={usuarios.filter(user => user.id !== id).map(user => {
+          return {
+            ...user,
+            estado: user.estado.nombre,
+            fecha_creacion: new Date(user.fecha_creacion).toLocaleDateString(),
+          }
+        })}
         cant={10}
         name='usuarios'
         Component={Usuario}
+        filterFields={['nombre', 'apellido', 'email', 'fecha_creacion', 'estado']}
       />
     </div>
   )

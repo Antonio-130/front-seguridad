@@ -1,9 +1,11 @@
 import { useContext, useState } from "react"
 import { useMutation, useQueryClient } from "react-query"
 import { useMessageModal } from "hooks/useMessageModal"
+import { useGeneratePassword } from "hooks/useGeneratePassword"
 import { Link } from "react-router-dom"
 import { deleteUsuario } from "services/usuario"
-import { UpdateIcon, LookupIcon, DeleteIcon } from "assets/ui"
+import { resetClave, sendEmail } from "services/auth"
+import { UpdateIcon, LookupIcon, DeleteIcon, KeyIcon } from "assets/ui"
 import Modal from "components/Modal"
 import MessageInfo from "components/MessageInfo"
 import FieldButton from "components/inputsForm/FieldButton"
@@ -21,14 +23,21 @@ export default function Usuario({ data }) {
 
   const [showModal, setShowModal] = useState(false)
   const [infoMsg, setInfoMsg] = useState(false)
+  const [action, setAction] = useState('')
 
   const { error, modalActive, setSuccesMsg, setErrorMsg, setClearMsg } = useMessageModal()
 
   const deleteUsuarioMutation = useMutation(deleteUsuario, {
-    onSuccess: () =>{
-      setSuccesMsg()
-      queryClient.invalidateQueries('usuarios')
-    },
+    onSuccess: setSuccesMsg,
+    onError: setErrorMsg
+  })
+
+  const resetClaveMutation = useMutation(resetClave, {
+    onError: setErrorMsg
+  })
+
+  const sendEmailMutation = useMutation(sendEmail, {
+    onSuccess: setSuccesMsg,
     onError: setErrorMsg
   })
 
@@ -40,6 +49,17 @@ export default function Usuario({ data }) {
   const handleDelete = () => {
     handleCloseMsgInfo()
     deleteUsuarioMutation.mutate(id)
+  }
+
+  const newPass = useGeneratePassword(8)
+
+  const handleResetClave = () => {
+    handleCloseMsgInfo()
+    resetClaveMutation.mutate({ id, clave: newPass }, {
+      onSuccess: () => {
+        sendEmailMutation.mutate({ email, username, new_clave: newPass })
+      }
+    })
   }
 
   const handleCloseMsgInfo = () => {
@@ -54,8 +74,8 @@ export default function Usuario({ data }) {
         <p>{nombre}</p>
         <p>{apellido}</p>
         <p>{email}</p>
-        <p>{new Date(fecha_creacion).toLocaleDateString()}</p>
-        <p>{estado.nombre}</p>
+        <p>{fecha_creacion}</p>
+        <p>{estado}</p>
         <div>
           {hasAccion("get_usuario") &&
             <button>
@@ -70,15 +90,30 @@ export default function Usuario({ data }) {
               </Link>
             </button>}
           {hasAccion("delete_usuario") &&
-            <button onClick={handleOnClick}>
+            <button onClick={() => {handleOnClick(); setAction('delete')}}>
               <DeleteIcon name="usuario" />
             </button>}
-          {deleteUsuarioMutation.isLoading && <Loader />}
+          {hasAccion("reset_clave") &&
+            <button onClick={() => {handleOnClick(); setAction('reset')}}>
+              <KeyIcon name="usuario" />
+            </button>}
+          {
+            (deleteUsuarioMutation.isLoading
+            || resetClaveMutation.isLoading
+            || sendEmailMutation.isLoading)
+            && <Loader />
+          }
           <Modal active={modalActive || showModal}>
             {infoMsg && (
               <MessageInfo
-                message={`Esta seguro de eliminar el usuario ${username}?`}
-                onClick={handleDelete}
+                message={
+                  (action === "delete" && `Esta seguro de eliminar el usuario ${username}?`)
+                  || (action === "reset" && `Esta seguro de resetear la clave del usuario ${username}?`)
+                }
+                onClick={() => {
+                  if (action === "delete") handleDelete()
+                  if (action === "reset") handleResetClave()
+                }}
                 optionalButton={
                   <FieldButton
                     type="button"
@@ -90,14 +125,23 @@ export default function Usuario({ data }) {
             )}
             {!error && !infoMsg && (
               <MessageInfo
-                message="Usuario eliminado con exito"
+                message={
+                  (action === "delete" && "Usuario eliminado con exito")
+                  || (action === "reset" && "Clave reseteada con exito")
+                }
                 type="success"
-                onClick={setClearMsg}
+                onClick={() => {
+                  if (action === "delete") {queryClient.invalidateQueries("usuarios"); setClearMsg()}
+                  if (action === "reset") setClearMsg()
+                }}
               />
             )}
             {error && (
               <MessageInfo
-                message="Error al eliminar el usuario"
+                message={
+                  (action === "delete" && "Error al eliminar el usuario")
+                  || (action === "reset" && "Error al resetear la clave")
+                }
                 type="error"
                 onClick={setClearMsg}
               />

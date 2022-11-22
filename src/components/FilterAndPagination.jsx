@@ -2,8 +2,8 @@ import { useFilterAndPagination } from "hooks/useFilterAndPagination"
 import ListOfValues from "./ListOfValues"
 import 'styles/FilterAndPagination.css'
 
-export default function FilterAndPagination({ values, cant, name, Component }) {
-  const { filter, onFilterChange, filteredArray, nextPage, prevPage } = useFilterAndPagination({ values, cant })
+export default function FilterAndPagination({ values, cant, name, Component, filterFields }) {
+  const { filter, onFilterChange, filteredArray, nextPage, prevPage } = useFilterAndPagination({ values, cant, filterFields })
   return (
     <>
       <ListOfValues name={name} values={filteredArray} Component={Component} />
@@ -20,10 +20,10 @@ export default function FilterAndPagination({ values, cant, name, Component }) {
         </div>
         <div className="buttons-container">
           <button className="btn-prev form-btn" onClick={prevPage}>
-            Anterior
+            ⬅ Anterior
           </button>
           <button className="btn-next form-btn" onClick={nextPage}>
-            Siguiente
+            Siguiente ➡
           </button>
         </div>
       </div>

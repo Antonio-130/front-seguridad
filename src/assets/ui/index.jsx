@@ -7,6 +7,7 @@ import updateIcon from './update.svg'
 import arrowDownIcon from './arrow-down.svg'
 import arrowUpIcon from './arrow-up.svg'
 import infoIcon from './info.svg'
+import keyIcon from './key.svg'
 
 export const AddIcon = ({name}) => {
   return (
@@ -47,6 +48,12 @@ export const ArrowUpIcon = () => {
 export const InfoIcon = () => {
   return (
     <img src={infoIcon} alt="info icon" title="Información" className='icon info'/>
+  )
+}
+
+export const KeyIcon = () => {
+  return (
+    <img src={keyIcon} alt="key icon" title="Restablecer clave" className='icon'/>
   )
 }
 

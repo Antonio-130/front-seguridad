@@ -154,9 +154,15 @@ export default function CreateUsuario() {
             )}
             {error && (
               <MessaggeInfo
-                message="Error al crear el usuario"
+                message={
+                  (createUsuarioMutation.isError && "Error al crear el usuario")
+                  || (sendEmailMutation.isError && "Usuario creado pero hubo un error al enviar el email")
+                }
                 type="error"
-                onClick={setClearMsg}
+                onClick={() => {
+                  if (createUsuarioMutation.isError) setClearMsg()
+                  if (sendEmailMutation.isError) {setClearMsg(); navigate(-1)}
+                }}
               />
             )}
           </Modal>
