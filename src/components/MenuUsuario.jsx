@@ -15,6 +15,9 @@ export default function MenuUsuario() {
       </div>
       <div className='menu-usuario-container'>
         <div className='item-list'>
+          <Link to='/profile'>Mis datos</Link>
+        </div>
+        <div className='item-list'>
           <Link to='/changeClave'>Cambiar Contraseña</Link>
         </div>
         <div className='item-list'>

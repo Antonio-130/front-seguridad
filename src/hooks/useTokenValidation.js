@@ -7,6 +7,11 @@ export const useTokenValidation = (isLogin) => {
 
   const { handleAutoLogin, handleLogout } = useContext(UsuarioContext)
 
+  window.onstorage = event => {
+    localStorage.removeItem(event.key)
+    window.location.reload()
+  }
+
   let token = JSON.parse(localStorage.getItem("token"))
   let usuario = JSON.parse(localStorage.getItem("usuario"))
   let acciones = JSON.parse(localStorage.getItem("acciones"))

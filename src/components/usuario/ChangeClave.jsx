@@ -8,14 +8,13 @@ import { changeClaveValidation } from 'schemas/validation'
 import { changeClave } from 'services/auth'
 import FieldText from 'components/inputsForm/FieldText'
 import FieldButton from 'components/inputsForm/FieldButton'
-import Modal from './Modal'
-import MessageInfo from './MessageInfo'
+import Modal from '../Modal'
+import MessageInfo from '../MessageInfo'
 import Loader from 'components/Loader'
 import UsuarioContext from 'context/UsuarioContext'
 import 'styles/Form.css'
 
 export default function ChangeClave() {
-
 
   useChangeTitle('Cambiar contraseña')
 
