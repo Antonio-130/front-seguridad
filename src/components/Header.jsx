@@ -12,6 +12,8 @@ export default function Header() {
   const location = useLocation()
   useTokenValidation(location.state?.prevUrl === '/auth/login' ? true : false)
 
+  const conditionSection = hasAccesoByTag('grupos') || hasAccesoByTag('usuarios') || hasAccesoByTag('estadosUsuario')
+
   return (
     <>
       <div className="empty-space"></div>
@@ -23,17 +25,24 @@ export default function Header() {
           <h2 id="header-title">Inicio</h2>
           <nav>
             <Link to="/">Inicio</Link>
-            {isLogged && hasAccesoByTag('usuarios') && <Link to="/usuarios">Usuarios</Link>}
-            {isLogged && hasAccesoByTag('grupos') && <Link to="/grupos">Grupos</Link>}
-            {isLogged && hasAccesoByTag('estadosUsuario') && <Link to="/estadosUsuario">Estados de Usuario</Link>}
+            {conditionSection && (
+              <section>
+                <p>Seguridad</p>
+                <div className="section-items-container">
+                  {isLogged && hasAccesoByTag('usuarios') && <Link to="/usuarios">Usuarios</Link>}
+                  {isLogged && hasAccesoByTag('grupos') && <Link to="/grupos">Grupos</Link>}
+                  {isLogged && hasAccesoByTag('estadosUsuario') && <Link to="/estadosUsuario">Estados de Usuario</Link>}
+                </div>
+              </section>
+            )}
           </nav>
         </div>
         {isLogged ? (
           <MenuUsuario />
         ) : (
         <div className="button-container">
-          <button>
-            <p><Link to="/auth/login" style={{'color': 'white'}}>Iniciar sesión</Link></p>
+          <button onClick={() => navigate('/auth/login')}>
+            Iniciar Sesion
           </button>
         </div>)}
       </div>

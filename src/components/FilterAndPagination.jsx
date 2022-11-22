@@ -22,7 +22,7 @@ export default function FilterAndPagination({ values, cant, name, Component, fil
           <button className="btn-prev form-btn" onClick={prevPage}>
             ⬅ Anterior
           </button>
-          <p className="pages">{currentPage + "-" + max}</p>
+          <p className="pages">{currentPage + " - " + max}</p>
           <button className="btn-next form-btn" onClick={nextPage}>
             Siguiente ➡
           </button>
