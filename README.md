@@ -1,3 +1,13 @@
+## Principales tecnologías utilizadas
+
+- [JavaScript](https://developer.mozilla.org/es/docs/Web/JavaScript)
+- [create-react-app](https://create-react-app.dev/)
+- [React](https://reactjs.org/)
+- [React-router](https://reactrouter.com/)
+- [React-query](https://react-query.tanstack.com/)
+- [Formik](https://formik.org/)
+- [Yup](https://github.com/jquense/yup)
+
 ## Requerimientos
 
 Instalar [Node.js](https://nodejs.org/en/) en su versión LTS.
