@@ -1,34 +1,39 @@
-## Available Scripts
+## Requerimientos
 
-In the project directory, you can run:
+Instalar [Node.js](https://nodejs.org/en/) en su versión LTS.
+
+## Scripts
+
+Puedes ejecutar:
+
+### `npm install`
+
+Instala todas las dependencias / paquetes que necesita el proyecto. Los mismos se ecncuentran en el archivo 'package.json'.
+
+post-data: Ignorar los warnings (vulnerabilidades) que se muestran en la consola. Tiene que ver con las dependencias de desarrollo, no ejecute el comando `npm audit fix` ya que puede generar errores en el proyecto.
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Inicia la app en modo desarrollador.\
+Abre [http://localhost:3000](http://localhost:3000) para ver la app en tu navegador.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+La pagina va a recargar cada vez que hagas cambios.\
+Puedes ver cualquier error en la consola.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Empaqueta la aplicacion en la carpeta `build`.\
+Empaqueta correctamente React en modo de producción y optimiza la compilación para obtener el mejor rendimiento.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+El empaquetado es para el deploy.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Más info: [deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
+---
 ### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Info: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+### `npm run build` no logra minificar.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Info: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

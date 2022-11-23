@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import reportWebVitals from './reportWebVitals'
 import UsuarioState from 'context/UsuarioState'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import './index.css'
@@ -19,5 +18,3 @@ root.render(
     </QueryClientProvider>
   </React.StrictMode>
 )
-
-reportWebVitals()
